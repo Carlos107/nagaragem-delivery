@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<!-- saved from url=(0045)file:///C:/Users/junio/Downloads/index_5.html -->
+<!-- saved from url=(0045)file:///C:/Users/junio/Downloads/index_7.html -->
 <html lang="pt-BR"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Na Garagem Delivery — Faça seu Pedido</title>
-<link href="./Na Garagem Delivery — Faça seu Pedido 2_files/css2" rel="stylesheet">
+<link href="./Na Garagem Delivery — Faça seu Pedido 4_files/css2" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -63,13 +63,306 @@
     </div>
 
     <div class="delivery-banner">
-      <div class="delivery-info-item"><span>🛵</span> Taxa de entrega: R$ 5,00</div>
+      <div class="delivery-info-item"><span>🛵</span> Taxa de entrega: R$ 3,00</div>
       <div class="delivery-info-item"><span>⏱</span> Entrega em ~45 min</div>
       <div class="delivery-info-item"><span>📦</span> Pedido mínimo: R$ 20,00</div>
     </div>
 
-    <div class="cat-filter" id="cat-filter"></div>
-    <div class="menu-grid" id="menu-grid"></div></div>
+    <div class="cat-filter" id="cat-filter"><button class="cat-btn active">Todos</button><button class="cat-btn">Espetos</button><button class="cat-btn">Bebidas</button></div>
+    <div class="menu-grid" id="menu-grid"><div class="menu-card" style="animation-delay: 0s;">
+      <div class="menu-card-top">
+        <span class="menu-emoji">🥩</span>
+        <div style="flex:1;">
+          <div class="menu-name">Boi</div>
+          <div class="menu-desc">Espeto na brasa</div>
+          <div style="display:flex;gap:8px;margin-top:6px;flex-wrap:wrap;">
+        <div style="font-family:&#39;Oswald&#39;,sans-serif;font-size:11px;color:var(--creme-dim);">Simples <strong style="color:var(--amarelo);font-family:&#39;Bebas Neue&#39;,sans-serif;font-size:16px;"> R$ 14,00</strong></div>
+        <div style="font-family:&#39;Oswald&#39;,sans-serif;font-size:11px;color:var(--creme-dim);">Completo <strong style="color:var(--amarelo);font-family:&#39;Bebas Neue&#39;,sans-serif;font-size:16px;"> R$ 16,00</strong></div>
+      </div>
+        </div>
+      </div>
+      
+        <div class="card-controls">
+          <div class="type-selector" id="ts-1">
+            <button class="type-btn selected" onclick="selectType(1,&#39;simples&#39;,this)" id="tb-s-1">
+              <span>R$ 14,00</span>Simples
+            </button>
+            <button class="type-btn" onclick="selectType(1,&#39;completo&#39;,this)" id="tb-c-1">
+              <span>R$ 16,00</span>Completo
+            </button>
+          </div>
+          <div class="qty-row">
+            <button class="qty-btn" onclick="changeLocalQty(1,-1)">−</button>
+            <div class="qty-display" id="lqty-1">1</div>
+            <button class="qty-btn" onclick="changeLocalQty(1,1)">+</button>
+            <button class="add-btn" onclick="addToCart(1)" style="flex:1;margin-left:8px;">Adicionar</button>
+          </div>
+        </div>
+    </div><div class="menu-card" style="animation-delay: 0.04s;">
+      <div class="menu-card-top">
+        <span class="menu-emoji">🥓</span>
+        <div style="flex:1;">
+          <div class="menu-name">Franbacon</div>
+          <div class="menu-desc">Espeto na brasa</div>
+          <div style="display:flex;gap:8px;margin-top:6px;flex-wrap:wrap;">
+        <div style="font-family:&#39;Oswald&#39;,sans-serif;font-size:11px;color:var(--creme-dim);">Simples <strong style="color:var(--amarelo);font-family:&#39;Bebas Neue&#39;,sans-serif;font-size:16px;"> R$ 14,00</strong></div>
+        <div style="font-family:&#39;Oswald&#39;,sans-serif;font-size:11px;color:var(--creme-dim);">Completo <strong style="color:var(--amarelo);font-family:&#39;Bebas Neue&#39;,sans-serif;font-size:16px;"> R$ 16,00</strong></div>
+      </div>
+        </div>
+      </div>
+      
+        <div class="card-controls">
+          <div class="type-selector" id="ts-2">
+            <button class="type-btn selected" onclick="selectType(2,&#39;simples&#39;,this)" id="tb-s-2">
+              <span>R$ 14,00</span>Simples
+            </button>
+            <button class="type-btn" onclick="selectType(2,&#39;completo&#39;,this)" id="tb-c-2">
+              <span>R$ 16,00</span>Completo
+            </button>
+          </div>
+          <div class="qty-row">
+            <button class="qty-btn" onclick="changeLocalQty(2,-1)">−</button>
+            <div class="qty-display" id="lqty-2">1</div>
+            <button class="qty-btn" onclick="changeLocalQty(2,1)">+</button>
+            <button class="add-btn" onclick="addToCart(2)" style="flex:1;margin-left:8px;">Adicionar</button>
+          </div>
+        </div>
+    </div><div class="menu-card" style="animation-delay: 0.08s;">
+      <div class="menu-card-top">
+        <span class="menu-emoji">🐷</span>
+        <div style="flex:1;">
+          <div class="menu-name">Suíno</div>
+          <div class="menu-desc">Espeto na brasa</div>
+          <div style="display:flex;gap:8px;margin-top:6px;flex-wrap:wrap;">
+        <div style="font-family:&#39;Oswald&#39;,sans-serif;font-size:11px;color:var(--creme-dim);">Simples <strong style="color:var(--amarelo);font-family:&#39;Bebas Neue&#39;,sans-serif;font-size:16px;"> R$ 14,00</strong></div>
+        <div style="font-family:&#39;Oswald&#39;,sans-serif;font-size:11px;color:var(--creme-dim);">Completo <strong style="color:var(--amarelo);font-family:&#39;Bebas Neue&#39;,sans-serif;font-size:16px;"> R$ 16,00</strong></div>
+      </div>
+        </div>
+      </div>
+      
+        <div class="card-controls">
+          <div class="type-selector" id="ts-3">
+            <button class="type-btn selected" onclick="selectType(3,&#39;simples&#39;,this)" id="tb-s-3">
+              <span>R$ 14,00</span>Simples
+            </button>
+            <button class="type-btn" onclick="selectType(3,&#39;completo&#39;,this)" id="tb-c-3">
+              <span>R$ 16,00</span>Completo
+            </button>
+          </div>
+          <div class="qty-row">
+            <button class="qty-btn" onclick="changeLocalQty(3,-1)">−</button>
+            <div class="qty-display" id="lqty-3">1</div>
+            <button class="qty-btn" onclick="changeLocalQty(3,1)">+</button>
+            <button class="add-btn" onclick="addToCart(3)" style="flex:1;margin-left:8px;">Adicionar</button>
+          </div>
+        </div>
+    </div><div class="menu-card" style="animation-delay: 0.12s;">
+      <div class="menu-card-top">
+        <span class="menu-emoji">🍗</span>
+        <div style="flex:1;">
+          <div class="menu-name">Tulipa</div>
+          <div class="menu-desc">Espeto na brasa</div>
+          <div style="display:flex;gap:8px;margin-top:6px;flex-wrap:wrap;">
+        <div style="font-family:&#39;Oswald&#39;,sans-serif;font-size:11px;color:var(--creme-dim);">Simples <strong style="color:var(--amarelo);font-family:&#39;Bebas Neue&#39;,sans-serif;font-size:16px;"> R$ 14,00</strong></div>
+        <div style="font-family:&#39;Oswald&#39;,sans-serif;font-size:11px;color:var(--creme-dim);">Completo <strong style="color:var(--amarelo);font-family:&#39;Bebas Neue&#39;,sans-serif;font-size:16px;"> R$ 16,00</strong></div>
+      </div>
+        </div>
+      </div>
+      
+        <div class="card-controls">
+          <div class="type-selector" id="ts-4">
+            <button class="type-btn selected" onclick="selectType(4,&#39;simples&#39;,this)" id="tb-s-4">
+              <span>R$ 14,00</span>Simples
+            </button>
+            <button class="type-btn" onclick="selectType(4,&#39;completo&#39;,this)" id="tb-c-4">
+              <span>R$ 16,00</span>Completo
+            </button>
+          </div>
+          <div class="qty-row">
+            <button class="qty-btn" onclick="changeLocalQty(4,-1)">−</button>
+            <div class="qty-display" id="lqty-4">1</div>
+            <button class="qty-btn" onclick="changeLocalQty(4,1)">+</button>
+            <button class="add-btn" onclick="addToCart(4)" style="flex:1;margin-left:8px;">Adicionar</button>
+          </div>
+        </div>
+    </div><div class="menu-card" style="animation-delay: 0.16s;">
+      <div class="menu-card-top">
+        <span class="menu-emoji">🍗</span>
+        <div style="flex:1;">
+          <div class="menu-name">Frango</div>
+          <div class="menu-desc">Espeto na brasa</div>
+          <div style="display:flex;gap:8px;margin-top:6px;flex-wrap:wrap;">
+        <div style="font-family:&#39;Oswald&#39;,sans-serif;font-size:11px;color:var(--creme-dim);">Simples <strong style="color:var(--amarelo);font-family:&#39;Bebas Neue&#39;,sans-serif;font-size:16px;"> R$ 14,00</strong></div>
+        <div style="font-family:&#39;Oswald&#39;,sans-serif;font-size:11px;color:var(--creme-dim);">Completo <strong style="color:var(--amarelo);font-family:&#39;Bebas Neue&#39;,sans-serif;font-size:16px;"> R$ 16,00</strong></div>
+      </div>
+        </div>
+      </div>
+      
+        <div class="card-controls">
+          <div class="type-selector" id="ts-5">
+            <button class="type-btn selected" onclick="selectType(5,&#39;simples&#39;,this)" id="tb-s-5">
+              <span>R$ 14,00</span>Simples
+            </button>
+            <button class="type-btn" onclick="selectType(5,&#39;completo&#39;,this)" id="tb-c-5">
+              <span>R$ 16,00</span>Completo
+            </button>
+          </div>
+          <div class="qty-row">
+            <button class="qty-btn" onclick="changeLocalQty(5,-1)">−</button>
+            <div class="qty-display" id="lqty-5">1</div>
+            <button class="qty-btn" onclick="changeLocalQty(5,1)">+</button>
+            <button class="add-btn" onclick="addToCart(5)" style="flex:1;margin-left:8px;">Adicionar</button>
+          </div>
+        </div>
+    </div><div class="menu-card" style="animation-delay: 0.2s;">
+      <div class="menu-card-top">
+        <span class="menu-emoji">🔥</span>
+        <div style="flex:1;">
+          <div class="menu-name">Barrigada</div>
+          <div class="menu-desc">Espeto na brasa</div>
+          <div style="display:flex;gap:8px;margin-top:6px;flex-wrap:wrap;">
+        <div style="font-family:&#39;Oswald&#39;,sans-serif;font-size:11px;color:var(--creme-dim);">Simples <strong style="color:var(--amarelo);font-family:&#39;Bebas Neue&#39;,sans-serif;font-size:16px;"> R$ 14,00</strong></div>
+        <div style="font-family:&#39;Oswald&#39;,sans-serif;font-size:11px;color:var(--creme-dim);">Completo <strong style="color:var(--amarelo);font-family:&#39;Bebas Neue&#39;,sans-serif;font-size:16px;"> R$ 16,00</strong></div>
+      </div>
+        </div>
+      </div>
+      
+        <div class="card-controls">
+          <div class="type-selector" id="ts-6">
+            <button class="type-btn selected" onclick="selectType(6,&#39;simples&#39;,this)" id="tb-s-6">
+              <span>R$ 14,00</span>Simples
+            </button>
+            <button class="type-btn" onclick="selectType(6,&#39;completo&#39;,this)" id="tb-c-6">
+              <span>R$ 16,00</span>Completo
+            </button>
+          </div>
+          <div class="qty-row">
+            <button class="qty-btn" onclick="changeLocalQty(6,-1)">−</button>
+            <div class="qty-display" id="lqty-6">1</div>
+            <button class="qty-btn" onclick="changeLocalQty(6,1)">+</button>
+            <button class="add-btn" onclick="addToCart(6)" style="flex:1;margin-left:8px;">Adicionar</button>
+          </div>
+        </div>
+    </div><div class="menu-card" style="animation-delay: 0.24s;">
+      <div class="menu-card-top">
+        <span class="menu-emoji">🥖</span>
+        <div style="flex:1;">
+          <div class="menu-name">Pão de Alho</div>
+          <div class="menu-desc">Espeto na brasa</div>
+          <div style="display:flex;gap:8px;margin-top:6px;flex-wrap:wrap;">
+        <div style="font-family:&#39;Oswald&#39;,sans-serif;font-size:11px;color:var(--creme-dim);">Simples <strong style="color:var(--amarelo);font-family:&#39;Bebas Neue&#39;,sans-serif;font-size:16px;"> R$ 14,00</strong></div>
+        <div style="font-family:&#39;Oswald&#39;,sans-serif;font-size:11px;color:var(--creme-dim);">Completo <strong style="color:var(--amarelo);font-family:&#39;Bebas Neue&#39;,sans-serif;font-size:16px;"> R$ 16,00</strong></div>
+      </div>
+        </div>
+      </div>
+      
+        <div class="card-controls">
+          <div class="type-selector" id="ts-7">
+            <button class="type-btn selected" onclick="selectType(7,&#39;simples&#39;,this)" id="tb-s-7">
+              <span>R$ 14,00</span>Simples
+            </button>
+            <button class="type-btn" onclick="selectType(7,&#39;completo&#39;,this)" id="tb-c-7">
+              <span>R$ 16,00</span>Completo
+            </button>
+          </div>
+          <div class="qty-row">
+            <button class="qty-btn" onclick="changeLocalQty(7,-1)">−</button>
+            <div class="qty-display" id="lqty-7">1</div>
+            <button class="qty-btn" onclick="changeLocalQty(7,1)">+</button>
+            <button class="add-btn" onclick="addToCart(7)" style="flex:1;margin-left:8px;">Adicionar</button>
+          </div>
+        </div>
+    </div><div class="menu-card" style="animation-delay: 0.28s;">
+      <div class="menu-card-top">
+        <span class="menu-emoji">🥤</span>
+        <div style="flex:1;">
+          <div class="menu-name">Refrigerante Lata</div>
+          <div class="menu-desc">Lata gelada</div>
+          <div class="menu-price">R$ 5,00</div>
+        </div>
+      </div>
+      
+        <div class="card-controls">
+          <div class="qty-row">
+            <button class="qty-btn" onclick="changeLocalQty(8,-1)">−</button>
+            <div class="qty-display" id="lqty-8">1</div>
+            <button class="qty-btn" onclick="changeLocalQty(8,1)">+</button>
+            <button class="add-btn" onclick="addToCart(8)" style="flex:1;margin-left:8px;">Adicionar</button>
+          </div>
+        </div>
+    </div><div class="menu-card" style="animation-delay: 0.32s;">
+      <div class="menu-card-top">
+        <span class="menu-emoji">🍹</span>
+        <div style="flex:1;">
+          <div class="menu-name">Suco Lata</div>
+          <div class="menu-desc">Lata gelada</div>
+          <div class="menu-price">R$ 5,00</div>
+        </div>
+      </div>
+      
+        <div class="card-controls">
+          <div class="qty-row">
+            <button class="qty-btn" onclick="changeLocalQty(9,-1)">−</button>
+            <div class="qty-display" id="lqty-9">1</div>
+            <button class="qty-btn" onclick="changeLocalQty(9,1)">+</button>
+            <button class="add-btn" onclick="addToCart(9)" style="flex:1;margin-left:8px;">Adicionar</button>
+          </div>
+        </div>
+    </div><div class="menu-card" style="animation-delay: 0.36s;">
+      <div class="menu-card-top">
+        <span class="menu-emoji">🍺</span>
+        <div style="flex:1;">
+          <div class="menu-name">Cerveja Lata</div>
+          <div class="menu-desc">Lata bem gelada</div>
+          <div class="menu-price">R$ 5,00</div>
+        </div>
+      </div>
+      
+        <div class="card-controls">
+          <div class="qty-row">
+            <button class="qty-btn" onclick="changeLocalQty(10,-1)">−</button>
+            <div class="qty-display" id="lqty-10">1</div>
+            <button class="qty-btn" onclick="changeLocalQty(10,1)">+</button>
+            <button class="add-btn" onclick="addToCart(10)" style="flex:1;margin-left:8px;">Adicionar</button>
+          </div>
+        </div>
+    </div><div class="menu-card" style="animation-delay: 0.4s;">
+      <div class="menu-card-top">
+        <span class="menu-emoji">🥤</span>
+        <div style="flex:1;">
+          <div class="menu-name">Refrigerante 1Lt</div>
+          <div class="menu-desc">Garrafa 1 litro</div>
+          <div class="menu-price">R$ 10,00</div>
+        </div>
+      </div>
+      
+        <div class="card-controls">
+          <div class="qty-row">
+            <button class="qty-btn" onclick="changeLocalQty(11,-1)">−</button>
+            <div class="qty-display" id="lqty-11">1</div>
+            <button class="qty-btn" onclick="changeLocalQty(11,1)">+</button>
+            <button class="add-btn" onclick="addToCart(11)" style="flex:1;margin-left:8px;">Adicionar</button>
+          </div>
+        </div>
+    </div><div class="menu-card" style="animation-delay: 0.44s;">
+      <div class="menu-card-top">
+        <span class="menu-emoji">🥤</span>
+        <div style="flex:1;">
+          <div class="menu-name">Refrigerante 2Lt</div>
+          <div class="menu-desc">Garrafa 2 litros</div>
+          <div class="menu-price">R$ 15,00</div>
+        </div>
+      </div>
+      
+        <div class="card-controls">
+          <div class="qty-row">
+            <button class="qty-btn" onclick="changeLocalQty(12,-1)">−</button>
+            <div class="qty-display" id="lqty-12">1</div>
+            <button class="qty-btn" onclick="changeLocalQty(12,1)">+</button>
+            <button class="add-btn" onclick="addToCart(12)" style="flex:1;margin-left:8px;">Adicionar</button>
+          </div>
+        </div>
+    </div></div>
   </div>
 
   <!-- ═══ PAGE 2: DADOS ═══ -->
@@ -191,7 +484,7 @@
       <div class="success-title">Pedido Confirmado!</div>
       <div class="success-sub">Já estamos preparando tudo na brasa</div>
 
-      <a id="whatsapp-link" href="file:///C:/Users/junio/Downloads/index_5.html#" target="_blank" class="whatsapp-btn">
+      <a id="whatsapp-link" href="file:///C:/Users/junio/Downloads/index_7.html#" target="_blank" class="whatsapp-btn">
         <svg width="22" height="22" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.890-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"></path></svg>
         Enviar Pedido pelo WhatsApp
       </a>
@@ -200,7 +493,7 @@
     </div>
   </div>
 
-<!-- /app-layout -->
+</div><!-- /app-layout -->
 
 <!-- Carrinho lateral -->
 <div class="cart-overlay" id="cart-overlay" onclick="closeCart()"></div>
@@ -255,8 +548,7 @@ const TAXA_ENTREGA = 3;
    SUPABASE CONFIG
 ════════════════════════════════════ */
 const SUPABASE_URL = "https://ttpkmtwdzxezdufhsizu.supabase.co"; // ← sua Project URL
-const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InR0cGttdHdkenhlemR1ZmhzaXp1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkxMTI1MjMsImV4cCI6MjA5NDY4ODUyM30.GDANZ_9KOeqGuEWD1rhXjSbWrLBQmwCoglzHNK0mxtA
-";                   // ← sua anon key
+const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InR0cGttdHdkenhlemR1ZmhzaXp1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkxMTI1MjMsImV4cCI6MjA5NDY4ODUyM30.GDANZ_9KOeqGuEWD1rhXjSbWrLBQmwCoglzHNK0mxtA"; // ← sua anon key
 
 async function supabaseFetch(path, options = {}) {
   try {
@@ -708,7 +1000,7 @@ async function saveOrderToPanel() {
     body: JSON.stringify(pedido)
   });
 
-  if (result === null && result !== undefined) {
+  if (result === null) {
     showToast("Erro ao salvar pedido. Verifique a conexão.", "error");
     return;
   }
