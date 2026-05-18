@@ -1,0 +1,1424 @@
+<!DOCTYPE html>
+<!-- saved from url=(0045)file:///C:/Users/junio/Downloads/index_2.html -->
+<html lang="pt-BR"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Na Garagem Delivery — Faça seu Pedido</title>
+<link href="./Na Garagem Delivery — Faça seu Pedido_files/css2" rel="stylesheet">
+<link rel="stylesheet" href="file:///C:/Users/junio/Downloads/style.css">
+</head>
+<body>
+
+<div class="header-tape"></div>
+<header>
+  <div class="brand">
+    <div class="brand-text">
+      <div class="brand-name">Na Garagem</div>
+      <div class="brand-sub">Delivery de Espetos</div>
+    </div>
+  </div>
+
+  <div style="display:flex;align-items:center;gap:10px;">
+    <button class="cart-header-btn" onclick="openCart()" id="cart-header-btn" style="display:none">
+      🛒 <span class="cart-label">Carrinho</span>
+      <span class="cart-badge pop" id="cart-badge">0</span>
+    </button>
+    <button class="cart-header-btn" onclick="openOwnerLogin()" id="owner-btn" style="background: var(--preto-surface); color: var(--amarelo); border: 2px solid var(--amarelo-dim); clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%); padding: 10px 16px; font-family: Oswald, sans-serif; font-size: 12px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; cursor: pointer; transition: 0.2s;" onmouseover="this.style.background=&#39;var(--amarelo-glow)&#39;" onmouseout="this.style.background=&#39;var(--preto-surface)&#39;">
+      🔐 Painel
+    </button>
+  </div>
+</header>
+
+<!-- Steps -->
+<div class="app-layout">
+  <div class="steps-nav" id="steps-nav">
+    <div class="step-item">
+      <div class="step-dot active" id="step-dot-1">1</div>
+      <div class="step-label active" id="step-label-1">Cardápio</div>
+    </div>
+    <div class="step-connector" id="step-conn-1"></div>
+    <div class="step-item">
+      <div class="step-dot" id="step-dot-2">2</div>
+      <div class="step-label" id="step-label-2">Seus Dados</div>
+    </div>
+    <div class="step-connector" id="step-conn-2"></div>
+    <div class="step-item">
+      <div class="step-dot" id="step-dot-3">3</div>
+      <div class="step-label" id="step-label-3">Revisão</div>
+    </div>
+    <div class="step-connector" id="step-conn-3"></div>
+    <div class="step-item">
+      <div class="step-dot" id="step-dot-4">4</div>
+      <div class="step-label" id="step-label-4">Confirmado</div>
+    </div>
+  </div>
+
+  <!-- ═══ PAGE 1: CARDÁPIO ═══ -->
+  <div id="page-cardapio" class="page active">
+    <h1 class="page-title">🔥 CARDÁPIO</h1>
+    <div class="title-deco">
+      <div class="title-deco-line"></div>
+      <span class="title-deco-icon">🥩</span>
+      <div class="title-deco-line right"></div>
+    </div>
+
+    <div class="delivery-banner">
+      <div class="delivery-info-item"><span>🛵</span> Taxa de entrega: R$ 5,00</div>
+      <div class="delivery-info-item"><span>⏱</span> Entrega em ~45 min</div>
+      <div class="delivery-info-item"><span>📦</span> Pedido mínimo: R$ 20,00</div>
+    </div>
+
+    <div class="cat-filter" id="cat-filter"><button class="cat-btn active">Todos</button><button class="cat-btn">Espetos</button><button class="cat-btn">Bebidas</button></div>
+    <div class="menu-grid" id="menu-grid"><div class="menu-card" style="animation-delay: 0s;">
+      <div class="menu-card-top">
+        <span class="menu-emoji">🥩</span>
+        <div style="flex:1;">
+          <div class="menu-name">Boi</div>
+          <div class="menu-desc">Espeto na brasa</div>
+          <div style="display:flex;gap:8px;margin-top:6px;flex-wrap:wrap;">
+        <div style="font-family:&#39;Oswald&#39;,sans-serif;font-size:11px;color:var(--creme-dim);">Simples <strong style="color:var(--amarelo);font-family:&#39;Bebas Neue&#39;,sans-serif;font-size:16px;"> R$ 14,00</strong></div>
+        <div style="font-family:&#39;Oswald&#39;,sans-serif;font-size:11px;color:var(--creme-dim);">Completo <strong style="color:var(--amarelo);font-family:&#39;Bebas Neue&#39;,sans-serif;font-size:16px;"> R$ 16,00</strong></div>
+      </div>
+        </div>
+      </div>
+      
+        <div class="card-controls">
+          <div class="type-selector" id="ts-1">
+            <button class="type-btn selected" onclick="selectType(1,&#39;simples&#39;,this)" id="tb-s-1">
+              <span>R$ 14,00</span>Simples
+            </button>
+            <button class="type-btn" onclick="selectType(1,&#39;completo&#39;,this)" id="tb-c-1">
+              <span>R$ 16,00</span>Completo
+            </button>
+          </div>
+          <div class="qty-row">
+            <button class="qty-btn" onclick="changeLocalQty(1,-1)">−</button>
+            <div class="qty-display" id="lqty-1">1</div>
+            <button class="qty-btn" onclick="changeLocalQty(1,1)">+</button>
+            <button class="add-btn" onclick="addToCart(1)" style="flex:1;margin-left:8px;">Adicionar</button>
+          </div>
+        </div>
+    </div><div class="menu-card" style="animation-delay: 0.04s;">
+      <div class="menu-card-top">
+        <span class="menu-emoji">🥓</span>
+        <div style="flex:1;">
+          <div class="menu-name">Franbacon</div>
+          <div class="menu-desc">Espeto na brasa</div>
+          <div style="display:flex;gap:8px;margin-top:6px;flex-wrap:wrap;">
+        <div style="font-family:&#39;Oswald&#39;,sans-serif;font-size:11px;color:var(--creme-dim);">Simples <strong style="color:var(--amarelo);font-family:&#39;Bebas Neue&#39;,sans-serif;font-size:16px;"> R$ 14,00</strong></div>
+        <div style="font-family:&#39;Oswald&#39;,sans-serif;font-size:11px;color:var(--creme-dim);">Completo <strong style="color:var(--amarelo);font-family:&#39;Bebas Neue&#39;,sans-serif;font-size:16px;"> R$ 16,00</strong></div>
+      </div>
+        </div>
+      </div>
+      
+        <div class="card-controls">
+          <div class="type-selector" id="ts-2">
+            <button class="type-btn selected" onclick="selectType(2,&#39;simples&#39;,this)" id="tb-s-2">
+              <span>R$ 14,00</span>Simples
+            </button>
+            <button class="type-btn" onclick="selectType(2,&#39;completo&#39;,this)" id="tb-c-2">
+              <span>R$ 16,00</span>Completo
+            </button>
+          </div>
+          <div class="qty-row">
+            <button class="qty-btn" onclick="changeLocalQty(2,-1)">−</button>
+            <div class="qty-display" id="lqty-2">1</div>
+            <button class="qty-btn" onclick="changeLocalQty(2,1)">+</button>
+            <button class="add-btn" onclick="addToCart(2)" style="flex:1;margin-left:8px;">Adicionar</button>
+          </div>
+        </div>
+    </div><div class="menu-card" style="animation-delay: 0.08s;">
+      <div class="menu-card-top">
+        <span class="menu-emoji">🐷</span>
+        <div style="flex:1;">
+          <div class="menu-name">Suíno</div>
+          <div class="menu-desc">Espeto na brasa</div>
+          <div style="display:flex;gap:8px;margin-top:6px;flex-wrap:wrap;">
+        <div style="font-family:&#39;Oswald&#39;,sans-serif;font-size:11px;color:var(--creme-dim);">Simples <strong style="color:var(--amarelo);font-family:&#39;Bebas Neue&#39;,sans-serif;font-size:16px;"> R$ 14,00</strong></div>
+        <div style="font-family:&#39;Oswald&#39;,sans-serif;font-size:11px;color:var(--creme-dim);">Completo <strong style="color:var(--amarelo);font-family:&#39;Bebas Neue&#39;,sans-serif;font-size:16px;"> R$ 16,00</strong></div>
+      </div>
+        </div>
+      </div>
+      
+        <div class="card-controls">
+          <div class="type-selector" id="ts-3">
+            <button class="type-btn selected" onclick="selectType(3,&#39;simples&#39;,this)" id="tb-s-3">
+              <span>R$ 14,00</span>Simples
+            </button>
+            <button class="type-btn" onclick="selectType(3,&#39;completo&#39;,this)" id="tb-c-3">
+              <span>R$ 16,00</span>Completo
+            </button>
+          </div>
+          <div class="qty-row">
+            <button class="qty-btn" onclick="changeLocalQty(3,-1)">−</button>
+            <div class="qty-display" id="lqty-3">1</div>
+            <button class="qty-btn" onclick="changeLocalQty(3,1)">+</button>
+            <button class="add-btn" onclick="addToCart(3)" style="flex:1;margin-left:8px;">Adicionar</button>
+          </div>
+        </div>
+    </div><div class="menu-card" style="animation-delay: 0.12s;">
+      <div class="menu-card-top">
+        <span class="menu-emoji">🍗</span>
+        <div style="flex:1;">
+          <div class="menu-name">Tulipa</div>
+          <div class="menu-desc">Espeto na brasa</div>
+          <div style="display:flex;gap:8px;margin-top:6px;flex-wrap:wrap;">
+        <div style="font-family:&#39;Oswald&#39;,sans-serif;font-size:11px;color:var(--creme-dim);">Simples <strong style="color:var(--amarelo);font-family:&#39;Bebas Neue&#39;,sans-serif;font-size:16px;"> R$ 14,00</strong></div>
+        <div style="font-family:&#39;Oswald&#39;,sans-serif;font-size:11px;color:var(--creme-dim);">Completo <strong style="color:var(--amarelo);font-family:&#39;Bebas Neue&#39;,sans-serif;font-size:16px;"> R$ 16,00</strong></div>
+      </div>
+        </div>
+      </div>
+      
+        <div class="card-controls">
+          <div class="type-selector" id="ts-4">
+            <button class="type-btn selected" onclick="selectType(4,&#39;simples&#39;,this)" id="tb-s-4">
+              <span>R$ 14,00</span>Simples
+            </button>
+            <button class="type-btn" onclick="selectType(4,&#39;completo&#39;,this)" id="tb-c-4">
+              <span>R$ 16,00</span>Completo
+            </button>
+          </div>
+          <div class="qty-row">
+            <button class="qty-btn" onclick="changeLocalQty(4,-1)">−</button>
+            <div class="qty-display" id="lqty-4">1</div>
+            <button class="qty-btn" onclick="changeLocalQty(4,1)">+</button>
+            <button class="add-btn" onclick="addToCart(4)" style="flex:1;margin-left:8px;">Adicionar</button>
+          </div>
+        </div>
+    </div><div class="menu-card" style="animation-delay: 0.16s;">
+      <div class="menu-card-top">
+        <span class="menu-emoji">🍗</span>
+        <div style="flex:1;">
+          <div class="menu-name">Frango</div>
+          <div class="menu-desc">Espeto na brasa</div>
+          <div style="display:flex;gap:8px;margin-top:6px;flex-wrap:wrap;">
+        <div style="font-family:&#39;Oswald&#39;,sans-serif;font-size:11px;color:var(--creme-dim);">Simples <strong style="color:var(--amarelo);font-family:&#39;Bebas Neue&#39;,sans-serif;font-size:16px;"> R$ 14,00</strong></div>
+        <div style="font-family:&#39;Oswald&#39;,sans-serif;font-size:11px;color:var(--creme-dim);">Completo <strong style="color:var(--amarelo);font-family:&#39;Bebas Neue&#39;,sans-serif;font-size:16px;"> R$ 16,00</strong></div>
+      </div>
+        </div>
+      </div>
+      
+        <div class="card-controls">
+          <div class="type-selector" id="ts-5">
+            <button class="type-btn selected" onclick="selectType(5,&#39;simples&#39;,this)" id="tb-s-5">
+              <span>R$ 14,00</span>Simples
+            </button>
+            <button class="type-btn" onclick="selectType(5,&#39;completo&#39;,this)" id="tb-c-5">
+              <span>R$ 16,00</span>Completo
+            </button>
+          </div>
+          <div class="qty-row">
+            <button class="qty-btn" onclick="changeLocalQty(5,-1)">−</button>
+            <div class="qty-display" id="lqty-5">1</div>
+            <button class="qty-btn" onclick="changeLocalQty(5,1)">+</button>
+            <button class="add-btn" onclick="addToCart(5)" style="flex:1;margin-left:8px;">Adicionar</button>
+          </div>
+        </div>
+    </div><div class="menu-card" style="animation-delay: 0.2s;">
+      <div class="menu-card-top">
+        <span class="menu-emoji">🔥</span>
+        <div style="flex:1;">
+          <div class="menu-name">Barrigada</div>
+          <div class="menu-desc">Espeto na brasa</div>
+          <div style="display:flex;gap:8px;margin-top:6px;flex-wrap:wrap;">
+        <div style="font-family:&#39;Oswald&#39;,sans-serif;font-size:11px;color:var(--creme-dim);">Simples <strong style="color:var(--amarelo);font-family:&#39;Bebas Neue&#39;,sans-serif;font-size:16px;"> R$ 14,00</strong></div>
+        <div style="font-family:&#39;Oswald&#39;,sans-serif;font-size:11px;color:var(--creme-dim);">Completo <strong style="color:var(--amarelo);font-family:&#39;Bebas Neue&#39;,sans-serif;font-size:16px;"> R$ 16,00</strong></div>
+      </div>
+        </div>
+      </div>
+      
+        <div class="card-controls">
+          <div class="type-selector" id="ts-6">
+            <button class="type-btn selected" onclick="selectType(6,&#39;simples&#39;,this)" id="tb-s-6">
+              <span>R$ 14,00</span>Simples
+            </button>
+            <button class="type-btn" onclick="selectType(6,&#39;completo&#39;,this)" id="tb-c-6">
+              <span>R$ 16,00</span>Completo
+            </button>
+          </div>
+          <div class="qty-row">
+            <button class="qty-btn" onclick="changeLocalQty(6,-1)">−</button>
+            <div class="qty-display" id="lqty-6">1</div>
+            <button class="qty-btn" onclick="changeLocalQty(6,1)">+</button>
+            <button class="add-btn" onclick="addToCart(6)" style="flex:1;margin-left:8px;">Adicionar</button>
+          </div>
+        </div>
+    </div><div class="menu-card" style="animation-delay: 0.24s;">
+      <div class="menu-card-top">
+        <span class="menu-emoji">🥖</span>
+        <div style="flex:1;">
+          <div class="menu-name">Pão de Alho</div>
+          <div class="menu-desc">Espeto na brasa</div>
+          <div style="display:flex;gap:8px;margin-top:6px;flex-wrap:wrap;">
+        <div style="font-family:&#39;Oswald&#39;,sans-serif;font-size:11px;color:var(--creme-dim);">Simples <strong style="color:var(--amarelo);font-family:&#39;Bebas Neue&#39;,sans-serif;font-size:16px;"> R$ 14,00</strong></div>
+        <div style="font-family:&#39;Oswald&#39;,sans-serif;font-size:11px;color:var(--creme-dim);">Completo <strong style="color:var(--amarelo);font-family:&#39;Bebas Neue&#39;,sans-serif;font-size:16px;"> R$ 16,00</strong></div>
+      </div>
+        </div>
+      </div>
+      
+        <div class="card-controls">
+          <div class="type-selector" id="ts-7">
+            <button class="type-btn selected" onclick="selectType(7,&#39;simples&#39;,this)" id="tb-s-7">
+              <span>R$ 14,00</span>Simples
+            </button>
+            <button class="type-btn" onclick="selectType(7,&#39;completo&#39;,this)" id="tb-c-7">
+              <span>R$ 16,00</span>Completo
+            </button>
+          </div>
+          <div class="qty-row">
+            <button class="qty-btn" onclick="changeLocalQty(7,-1)">−</button>
+            <div class="qty-display" id="lqty-7">1</div>
+            <button class="qty-btn" onclick="changeLocalQty(7,1)">+</button>
+            <button class="add-btn" onclick="addToCart(7)" style="flex:1;margin-left:8px;">Adicionar</button>
+          </div>
+        </div>
+    </div><div class="menu-card" style="animation-delay: 0.28s;">
+      <div class="menu-card-top">
+        <span class="menu-emoji">🥤</span>
+        <div style="flex:1;">
+          <div class="menu-name">Refrigerante Lata</div>
+          <div class="menu-desc">Lata gelada</div>
+          <div class="menu-price">R$ 5,00</div>
+        </div>
+      </div>
+      
+        <div class="card-controls">
+          <div class="qty-row">
+            <button class="qty-btn" onclick="changeLocalQty(8,-1)">−</button>
+            <div class="qty-display" id="lqty-8">1</div>
+            <button class="qty-btn" onclick="changeLocalQty(8,1)">+</button>
+            <button class="add-btn" onclick="addToCart(8)" style="flex:1;margin-left:8px;">Adicionar</button>
+          </div>
+        </div>
+    </div><div class="menu-card" style="animation-delay: 0.32s;">
+      <div class="menu-card-top">
+        <span class="menu-emoji">🍹</span>
+        <div style="flex:1;">
+          <div class="menu-name">Suco Lata</div>
+          <div class="menu-desc">Lata gelada</div>
+          <div class="menu-price">R$ 5,00</div>
+        </div>
+      </div>
+      
+        <div class="card-controls">
+          <div class="qty-row">
+            <button class="qty-btn" onclick="changeLocalQty(9,-1)">−</button>
+            <div class="qty-display" id="lqty-9">1</div>
+            <button class="qty-btn" onclick="changeLocalQty(9,1)">+</button>
+            <button class="add-btn" onclick="addToCart(9)" style="flex:1;margin-left:8px;">Adicionar</button>
+          </div>
+        </div>
+    </div><div class="menu-card" style="animation-delay: 0.36s;">
+      <div class="menu-card-top">
+        <span class="menu-emoji">🍺</span>
+        <div style="flex:1;">
+          <div class="menu-name">Cerveja Lata</div>
+          <div class="menu-desc">Lata bem gelada</div>
+          <div class="menu-price">R$ 5,00</div>
+        </div>
+      </div>
+      
+        <div class="card-controls">
+          <div class="qty-row">
+            <button class="qty-btn" onclick="changeLocalQty(10,-1)">−</button>
+            <div class="qty-display" id="lqty-10">1</div>
+            <button class="qty-btn" onclick="changeLocalQty(10,1)">+</button>
+            <button class="add-btn" onclick="addToCart(10)" style="flex:1;margin-left:8px;">Adicionar</button>
+          </div>
+        </div>
+    </div><div class="menu-card" style="animation-delay: 0.4s;">
+      <div class="menu-card-top">
+        <span class="menu-emoji">🥤</span>
+        <div style="flex:1;">
+          <div class="menu-name">Refrigerante 1Lt</div>
+          <div class="menu-desc">Garrafa 1 litro</div>
+          <div class="menu-price">R$ 10,00</div>
+        </div>
+      </div>
+      
+        <div class="card-controls">
+          <div class="qty-row">
+            <button class="qty-btn" onclick="changeLocalQty(11,-1)">−</button>
+            <div class="qty-display" id="lqty-11">1</div>
+            <button class="qty-btn" onclick="changeLocalQty(11,1)">+</button>
+            <button class="add-btn" onclick="addToCart(11)" style="flex:1;margin-left:8px;">Adicionar</button>
+          </div>
+        </div>
+    </div><div class="menu-card" style="animation-delay: 0.44s;">
+      <div class="menu-card-top">
+        <span class="menu-emoji">🥤</span>
+        <div style="flex:1;">
+          <div class="menu-name">Refrigerante 2Lt</div>
+          <div class="menu-desc">Garrafa 2 litros</div>
+          <div class="menu-price">R$ 15,00</div>
+        </div>
+      </div>
+      
+        <div class="card-controls">
+          <div class="qty-row">
+            <button class="qty-btn" onclick="changeLocalQty(12,-1)">−</button>
+            <div class="qty-display" id="lqty-12">1</div>
+            <button class="qty-btn" onclick="changeLocalQty(12,1)">+</button>
+            <button class="add-btn" onclick="addToCart(12)" style="flex:1;margin-left:8px;">Adicionar</button>
+          </div>
+        </div>
+    </div></div>
+  </div>
+
+  <!-- ═══ PAGE 2: DADOS ═══ -->
+  <div id="page-dados" class="page">
+    <h1 class="page-title">📋 SEUS DADOS</h1>
+    <div class="title-deco">
+      <div class="title-deco-line"></div>
+      <span class="title-deco-icon">📍</span>
+      <div class="title-deco-line right"></div>
+    </div>
+
+    <form class="order-form" id="order-form" onsubmit="return false;">
+      <div class="form-section">
+        <div class="section-title">👤 Identificação</div>
+        <div class="form-row">
+          <label for="f-nome">Nome Completo *</label>
+          <input type="text" id="f-nome" placeholder="Seu nome completo" autocomplete="name">
+        </div>
+        <div class="form-row">
+          <label for="f-tel">Telefone / WhatsApp *</label>
+          <input type="tel" id="f-tel" placeholder="(99) 99999-9999" autocomplete="tel">
+        </div>
+      </div>
+
+      <div class="form-section">
+        <div class="section-title">📍 Endereço de Entrega</div>
+        <div class="form-row">
+          <label for="f-rua">Rua / Avenida *</label>
+          <input type="text" id="f-rua" placeholder="Nome da rua" autocomplete="street-address">
+        </div>
+        <div class="form-row-2col">
+          <div class="form-row" style="margin:0">
+            <label for="f-num">Número *</label>
+            <input type="text" id="f-num" placeholder="Nº">
+          </div>
+          <div class="form-row" style="margin:0">
+            <label for="f-comp">Complemento</label>
+            <input type="text" id="f-comp" placeholder="Apto, bloco...">
+          </div>
+        </div>
+        <div class="form-row">
+          <label for="f-bairro">Bairro *</label>
+          <input type="text" id="f-bairro" placeholder="Seu bairro" autocomplete="address-level3">
+        </div>
+        <div class="form-row">
+          <label for="f-cidade">Cidade *</label>
+          <input type="text" id="f-cidade" placeholder="Sua cidade" value="São Gotardo" autocomplete="address-level2">
+        </div>
+      </div>
+
+      <div class="form-section">
+        <div class="section-title">💰 Forma de Pagamento</div>
+        <div class="pay-options">
+          <div class="pay-option" onclick="selectPay(&#39;dinheiro&#39;,this)">
+            <div class="pay-icon">💵</div>
+            <div class="pay-label">Dinheiro</div>
+          </div>
+          <div class="pay-option" onclick="selectPay(&#39;pix&#39;,this)">
+            <div class="pay-icon">📱</div>
+            <div class="pay-label">Pix</div>
+          </div>
+          <div class="pay-option" onclick="selectPay(&#39;cartao&#39;,this)">
+            <div class="pay-icon">💳</div>
+            <div class="pay-label">Cartão</div>
+          </div>
+        </div>
+        <div id="troco-field" class="form-row" style="margin-top:14px">
+          <label for="f-troco">Troco para quanto?</label>
+          <input type="text" id="f-troco" placeholder="Ex: R$ 100,00">
+        </div>
+        <div id="cartao-type-field" style="display:none;margin-top:14px">
+          <div class="form-row" style="margin:0">
+            <label for="f-cartao-tipo">Tipo de cartão</label>
+            <select id="f-cartao-tipo">
+              <option value="">Selecione...</option>
+              <option value="credito">Crédito</option>
+              <option value="debito">Débito</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-section">
+        <div class="section-title">📝 Observações</div>
+        <div class="form-row" style="margin:0">
+          <label for="f-obs">Alguma observação? (opcional)</label>
+          <textarea id="f-obs" placeholder="Ex: Sem cebola, toque na campainha..."></textarea>
+        </div>
+      </div>
+    </form>
+
+    <div class="nav-btns">
+      <button class="btn-back" onclick="goTo(1)">← Voltar</button>
+      <button class="btn-next" onclick="validateAndReview()">Revisar Pedido →</button>
+    </div>
+  </div>
+
+  <!-- ═══ PAGE 3: REVISÃO ═══ -->
+  <div id="page-review" class="page">
+    <h1 class="page-title">✅ REVISÃO</h1>
+    <div class="title-deco">
+      <div class="title-deco-line"></div>
+      <span class="title-deco-icon">🔍</span>
+      <div class="title-deco-line right"></div>
+    </div>
+
+    <div class="review-section" id="review-content"></div>
+
+    <div class="nav-btns">
+      <button class="btn-back" onclick="goTo(2)">← Editar</button>
+      <button class="btn-next" onclick="confirmOrder()" style="background:#27AE60">🔥 Confirmar Pedido</button>
+    </div>
+  </div>
+
+  <!-- ═══ PAGE 4: SUCESSO ═══ -->
+  <div id="page-success" class="page">
+    <div class="success-screen">
+      <div class="success-icon">🎉</div>
+      <div class="success-title">Pedido Confirmado!</div>
+      <div class="success-sub">Já estamos preparando tudo na brasa</div>
+
+      <a id="whatsapp-link" href="file:///C:/Users/junio/Downloads/na_garagem_pedidos.html#" target="_blank" class="whatsapp-btn">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.890-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"></path></svg>
+        Enviar Pedido pelo WhatsApp
+      </a>
+
+      <button class="new-order-btn" onclick="newOrder()">+ Fazer Novo Pedido</button>
+    </div>
+  </div>
+
+</div><!-- /app-layout -->
+
+<!-- Carrinho lateral -->
+<div class="cart-overlay" id="cart-overlay" onclick="closeCart()"></div>
+<div class="cart-panel" id="cart-panel">
+  <div class="cart-panel-header">
+    <div class="cart-title">🛒 Carrinho</div>
+    <button class="cart-close" onclick="closeCart()">✕</button>
+  </div>
+  <div class="cart-items" id="cart-items-list"><div class="cart-empty"><div class="cart-empty-icon">🛒</div><div>Seu carrinho está vazio</div><div style="margin-top:6px;font-size:12px;">Adicione itens do cardápio</div></div></div>
+  <div class="cart-footer">
+    <div class="cart-total-row" id="cart-subtotal-row" style="margin-bottom:4px;">
+      <div class="cart-total-label" style="font-size:11px;">Subtotal</div>
+      <div style="font-family:&#39;Bebas Neue&#39;,sans-serif;font-size:18px;color:var(--creme-dim);letter-spacing:1px;" id="cart-subtotal-val">R$ 0,00</div>
+    </div>
+    <div class="cart-total-row" style="margin-bottom:4px;">
+      <div class="cart-total-label" style="font-size:11px;">🛵 Taxa de entrega</div>
+      <div style="font-family:&#39;Bebas Neue&#39;,sans-serif;font-size:18px;color:var(--creme-dim);letter-spacing:1px;">R$ 3,00</div>
+    </div>
+    <div style="border-top:1px solid var(--preto-border);margin:10px 0 10px;"></div>
+    <div class="cart-total-row">
+      <div>
+        <div class="cart-total-label">Total</div>
+      </div>
+      <div class="cart-total-val" id="cart-total-val">R$ 3,00</div>
+    </div>
+    <button class="proceed-btn" id="proceed-btn" onclick="goToCheckout()" disabled="">
+      Fechar Pedido →
+    </button>
+  </div>
+</div>
+
+<!-- Barra mobile -->
+<div class="mobile-cart-bar" id="mobile-cart-bar">
+  <div class="mobile-cart-info">
+    <div id="mobile-qty-txt">0 itens</div>
+    <strong id="mobile-total-txt">R$ 3,00</strong>
+  </div>
+  <button class="mobile-cart-btn" onclick="goToCheckout()">Ver Carrinho →</button>
+</div>
+
+<!-- Toast -->
+<div id="toast"></div>
+
+<script>
+/* ════════════════════════════════════
+   DADOS
+════════════════════════════════════ */
+const WHATSAPP_NUMBER = "5534999999999"; // ← ALTERE para o número da Na Garagem
+const TAXA_ENTREGA = 3;
+
+/* ════════════════════════════════════
+   SUPABASE CONFIG
+════════════════════════════════════ */
+const SUPABASE_URL = "https://ttpkmtwdzxezdufhsizu.supabase.co"; // ← sua Project URL
+const SUPABASE_KEY = "COLE_SUA_ANON_KEY_AQUI";                   // ← sua anon key
+
+async function supabaseFetch(path, options = {}) {
+  try {
+    const res = await fetch(SUPABASE_URL + path, {
+      method: options.method || "GET",
+      headers: {
+        "apikey":        SUPABASE_KEY,
+        "Authorization": "Bearer " + SUPABASE_KEY,
+        "Content-Type":  "application/json",
+        "Prefer":        options.prefer || ""
+      },
+      body: options.body || undefined
+    });
+    if (!res.ok) {
+      const err = await res.text();
+      console.error("Supabase erro:", res.status, err);
+      return null;
+    }
+    const text = await res.text();
+    return text ? JSON.parse(text) : null;
+  } catch (e) {
+    console.error("Supabase fetch falhou:", e);
+    return null;
+  }
+}
+
+const MENU = [
+  {id:1,  name:"Boi",        cat:"Espetos", priceSimples:14, priceCompleto:16, emoji:"🥩", desc:"Espeto na brasa"},
+  {id:2,  name:"Franbacon",  cat:"Espetos", priceSimples:14, priceCompleto:16, emoji:"🥓", desc:"Espeto na brasa"},
+  {id:3,  name:"Suíno",      cat:"Espetos", priceSimples:14, priceCompleto:16, emoji:"🐷", desc:"Espeto na brasa"},
+  {id:4,  name:"Tulipa",     cat:"Espetos", priceSimples:14, priceCompleto:16, emoji:"🍗", desc:"Espeto na brasa"},
+  {id:5,  name:"Frango",     cat:"Espetos", priceSimples:14, priceCompleto:16, emoji:"🍗", desc:"Espeto na brasa"},
+  {id:6,  name:"Barrigada",  cat:"Espetos", priceSimples:14, priceCompleto:16, emoji:"🔥", desc:"Espeto na brasa"},
+  {id:7,  name:"Pão de Alho",cat:"Espetos", priceSimples:14, priceCompleto:16, emoji:"🥖", desc:"Espeto na brasa"},
+  {id:8,  name:"Refrigerante Lata",  cat:"Bebidas", priceSimples:5,  priceCompleto:null, emoji:"🥤", desc:"Lata gelada"},
+  {id:9,  name:"Suco Lata",          cat:"Bebidas", priceSimples:5,  priceCompleto:null, emoji:"🍹", desc:"Lata gelada"},
+  {id:10, name:"Cerveja Lata",       cat:"Bebidas", priceSimples:5,  priceCompleto:null, emoji:"🍺", desc:"Lata bem gelada"},
+  {id:11, name:"Refrigerante 1Lt",   cat:"Bebidas", priceSimples:10, priceCompleto:null, emoji:"🥤", desc:"Garrafa 1 litro"},
+  {id:12, name:"Refrigerante 2Lt",   cat:"Bebidas", priceSimples:15, priceCompleto:null, emoji:"🥤", desc:"Garrafa 2 litros"},
+];
+
+const CATS = ["Todos","Espetos","Bebidas"];
+let activeCat = "Todos";
+
+let cart = []; // {id, name, emoji, type, price, qty}
+let currentStep = 1;
+let selectedPay = "";
+let orderDraft = {};
+
+const fmt = v => "R$ " + v.toFixed(2).replace(".", ",");
+
+/* ════════════════════════════════════
+   CARDÁPIO
+════════════════════════════════════ */
+function renderMenu() {
+  const cf = document.getElementById("cat-filter");
+  cf.innerHTML = "";
+  CATS.forEach(cat => {
+    const b = document.createElement("button");
+    b.className = "cat-btn" + (activeCat===cat ? " active" : "");
+    b.textContent = cat;
+    b.onclick = () => { activeCat = cat; renderMenu(); };
+    cf.appendChild(b);
+  });
+
+  const grid = document.getElementById("menu-grid");
+  grid.innerHTML = "";
+  const items = activeCat === "Todos" ? MENU : MENU.filter(i => i.cat===activeCat);
+
+  items.forEach((item, idx) => {
+    const card = document.createElement("div");
+    card.className = "menu-card";
+    card.style.animationDelay = (idx * 0.04) + "s";
+
+    let controlsHtml = "";
+
+    if (item.cat === "Espetos") {
+      controlsHtml = `
+        <div class="card-controls">
+          <div class="type-selector" id="ts-${item.id}">
+            <button class="type-btn selected" onclick="selectType(${item.id},'simples',this)" id="tb-s-${item.id}">
+              <span>${fmt(item.priceSimples)}</span>Simples
+            </button>
+            <button class="type-btn" onclick="selectType(${item.id},'completo',this)" id="tb-c-${item.id}">
+              <span>${fmt(item.priceCompleto)}</span>Completo
+            </button>
+          </div>
+          <div class="qty-row">
+            <button class="qty-btn" onclick="changeLocalQty(${item.id},-1)">−</button>
+            <div class="qty-display" id="lqty-${item.id}">1</div>
+            <button class="qty-btn" onclick="changeLocalQty(${item.id},1)">+</button>
+            <button class="add-btn" onclick="addToCart(${item.id})" style="flex:1;margin-left:8px;">Adicionar</button>
+          </div>
+        </div>`;
+    } else {
+      controlsHtml = `
+        <div class="card-controls">
+          <div class="qty-row">
+            <button class="qty-btn" onclick="changeLocalQty(${item.id},-1)">−</button>
+            <div class="qty-display" id="lqty-${item.id}">1</div>
+            <button class="qty-btn" onclick="changeLocalQty(${item.id},1)">+</button>
+            <button class="add-btn" onclick="addToCart(${item.id})" style="flex:1;margin-left:8px;">Adicionar</button>
+          </div>
+        </div>`;
+    }
+
+    let priceHtml = "";
+    if (item.cat === "Espetos") {
+      priceHtml = `<div style="display:flex;gap:8px;margin-top:6px;flex-wrap:wrap;">
+        <div style="font-family:'Oswald',sans-serif;font-size:11px;color:var(--creme-dim);">Simples <strong style="color:var(--amarelo);font-family:'Bebas Neue',sans-serif;font-size:16px;"> ${fmt(item.priceSimples)}</strong></div>
+        <div style="font-family:'Oswald',sans-serif;font-size:11px;color:var(--creme-dim);">Completo <strong style="color:var(--amarelo);font-family:'Bebas Neue',sans-serif;font-size:16px;"> ${fmt(item.priceCompleto)}</strong></div>
+      </div>`;
+    } else {
+      priceHtml = `<div class="menu-price">${fmt(item.priceSimples)}</div>`;
+    }
+
+    card.innerHTML = `
+      <div class="menu-card-top">
+        <span class="menu-emoji">${item.emoji}</span>
+        <div style="flex:1;">
+          <div class="menu-name">${item.name}</div>
+          <div class="menu-desc">${item.desc}</div>
+          ${priceHtml}
+        </div>
+      </div>
+      ${controlsHtml}
+    `;
+    grid.appendChild(card);
+  });
+}
+
+// Qtd local por card (antes de adicionar)
+const localQty = {};
+function getLocalQty(id) { return localQty[id] || 1; }
+function changeLocalQty(id, delta) {
+  const cur = getLocalQty(id);
+  const next = Math.max(1, cur + delta);
+  localQty[id] = next;
+  const el = document.getElementById("lqty-"+id);
+  if (el) el.textContent = next;
+}
+
+const localType = {};
+function selectType(id, type, btn) {
+  localType[id] = type;
+  document.getElementById("tb-s-"+id)?.classList.toggle("selected", type==="simples");
+  document.getElementById("tb-c-"+id)?.classList.toggle("selected", type==="completo");
+}
+function getLocalType(id) { return localType[id] || "simples"; }
+
+function addToCart(itemId) {
+  const item = MENU.find(m => m.id === itemId);
+  if (!item) return;
+
+  const qty   = getLocalQty(itemId);
+  const type  = item.cat === "Espetos" ? getLocalType(itemId) : null;
+  const price = item.cat === "Espetos"
+    ? (type === "completo" ? item.priceCompleto : item.priceSimples)
+    : item.priceSimples;
+  const typeLabel = type ? (type === "completo" ? "Completo" : "Simples") : null;
+
+  // Chave única para encontrar no carrinho
+  const key = item.id + (typeLabel || "");
+  const existing = cart.find(c => c.key === key);
+
+  if (existing) {
+    existing.qty += qty;
+  } else {
+    cart.push({ key, id: item.id, name: item.name, emoji: item.emoji, type: typeLabel, price, qty });
+  }
+
+  updateCartUI();
+  showToast(`${item.emoji} ${item.name}${typeLabel?" "+typeLabel:""} x${qty} adicionado!`, "success");
+
+  // Reset qty
+  localQty[itemId] = 1;
+  const el = document.getElementById("lqty-"+itemId);
+  if (el) el.textContent = "1";
+}
+
+/* ════════════════════════════════════
+   CARRINHO
+════════════════════════════════════ */
+function cartSubtotal() { return cart.reduce((s,c) => s + c.price*c.qty, 0); }
+function cartTotal()    { return cart.length ? cartSubtotal() + TAXA_ENTREGA : 0; }
+function cartCount()    { return cart.reduce((s,c) => s + c.qty, 0); }
+
+function updateCartUI() {
+  const count = cartCount();
+  const total = cartSubtotal();
+
+  // Badge header
+  const badge = document.getElementById("cart-badge");
+  if (badge) {
+    badge.textContent = count;
+    badge.classList.remove("pop");
+    requestAnimationFrame(() => badge.classList.add("pop"));
+  }
+
+  // Botão header
+  const hBtn = document.getElementById("cart-header-btn");
+  if (hBtn) hBtn.style.display = count > 0 ? "" : "none";
+
+  // Subtotal e Total no painel
+  const subEl = document.getElementById("cart-subtotal-val");
+  if (subEl) subEl.textContent = fmt(total);
+  const tvEl = document.getElementById("cart-total-val");
+  if (tvEl) tvEl.textContent = fmt(total + TAXA_ENTREGA);
+
+  // Botão fechar pedido
+  const pb = document.getElementById("proceed-btn");
+  if (pb) pb.disabled = count === 0;
+
+  // Barra mobile
+  const mbar = document.getElementById("mobile-cart-bar");
+  if (mbar) mbar.className = "mobile-cart-bar" + (count > 0 && currentStep === 1 ? " visible" : "");
+  const mqty = document.getElementById("mobile-qty-txt");
+  const mtot = document.getElementById("mobile-total-txt");
+  if (mqty) mqty.textContent = count + (count === 1 ? " item" : " itens");
+  if (mtot) mtot.textContent = fmt(total + TAXA_ENTREGA);
+
+  renderCartItems();
+}
+
+function renderCartItems() {
+  const list = document.getElementById("cart-items-list");
+  if (!list) return;
+
+  if (cart.length === 0) {
+    list.innerHTML = `<div class="cart-empty"><div class="cart-empty-icon">🛒</div><div>Seu carrinho está vazio</div><div style="margin-top:6px;font-size:12px;">Adicione itens do cardápio</div></div>`;
+    return;
+  }
+
+  list.innerHTML = "";
+  cart.forEach(c => {
+    const div = document.createElement("div");
+    div.className = "cart-item";
+    div.innerHTML = `
+      <div class="cart-item-row">
+        <div>
+          <div class="cart-item-name">${c.emoji} ${c.name}</div>
+          ${c.type ? `<div class="cart-item-type">${c.type}</div>` : ""}
+        </div>
+        <div class="cart-item-price">${fmt(c.price * c.qty)}</div>
+      </div>
+      <div class="cart-item-row">
+        <div class="cart-item-qty">
+          <button class="cqty-btn" onclick="changeCartQty('${c.key}',-1)">−</button>
+          <div class="cqty-num">${c.qty}</div>
+          <button class="cqty-btn" onclick="changeCartQty('${c.key}',1)">+</button>
+          <button class="cart-del" onclick="removeCartItem('${c.key}')" title="Remover">🗑</button>
+        </div>
+        <div style="font-family:'Oswald',sans-serif;font-size:11px;color:var(--creme-dim);">${fmt(c.price)} × ${c.qty}</div>
+      </div>`;
+    list.appendChild(div);
+  });
+}
+
+function changeCartQty(key, delta) {
+  const item = cart.find(c => c.key === key);
+  if (!item) return;
+  item.qty = Math.max(1, item.qty + delta);
+  updateCartUI();
+}
+
+function removeCartItem(key) {
+  cart = cart.filter(c => c.key !== key);
+  updateCartUI();
+  if (cart.length === 0) showToast("Carrinho vazio", "info");
+}
+
+function openCart() {
+  document.getElementById("cart-overlay").classList.add("open");
+  document.getElementById("cart-panel").classList.add("open");
+  document.body.style.overflow = "hidden";
+}
+
+function closeCart() {
+  document.getElementById("cart-overlay").classList.remove("open");
+  document.getElementById("cart-panel").classList.remove("open");
+  document.body.style.overflow = "";
+}
+
+function goToCheckout() {
+  closeCart();
+  goTo(2);
+}
+
+/* ════════════════════════════════════
+   PAGAMENTO
+════════════════════════════════════ */
+function selectPay(type, el) {
+  selectedPay = type;
+  document.querySelectorAll(".pay-option").forEach(o => o.classList.remove("selected"));
+  el.classList.add("selected");
+  document.getElementById("troco-field").style.display      = type === "dinheiro" ? "flex" : "none";
+  document.getElementById("cartao-type-field").style.display = type === "cartao"  ? "block"  : "none";
+}
+
+/* ════════════════════════════════════
+   VALIDAÇÃO E NAVEGAÇÃO
+════════════════════════════════════ */
+function goTo(step) {
+  document.querySelectorAll(".page").forEach(p => p.classList.remove("active"));
+  currentStep = step;
+
+  const map = {1:"page-cardapio", 2:"page-dados", 3:"page-review", 4:"page-success"};
+  document.getElementById(map[step])?.classList.add("active");
+  window.scrollTo({top:0, behavior:"smooth"});
+
+  updateStepsUI(step);
+  updateCartUI();
+}
+
+function updateStepsUI(step) {
+  [1,2,3,4].forEach(s => {
+    const dot = document.getElementById("step-dot-"+s);
+    const lbl = document.getElementById("step-label-"+s);
+    const conn = document.getElementById("step-conn-"+s);
+    if (!dot) return;
+    dot.className  = "step-dot" + (s < step ? " done" : s === step ? " active" : "");
+    dot.textContent = s < step ? "✓" : s;
+    if (lbl) {
+      lbl.className = "step-label" + (s === step ? " active" : "");
+    }
+    if (conn) conn.className = "step-connector" + (s < step ? " done" : "");
+  });
+}
+
+function validateAndReview() {
+  const nome   = document.getElementById("f-nome").value.trim();
+  const tel    = document.getElementById("f-tel").value.trim();
+  const rua    = document.getElementById("f-rua").value.trim();
+  const num    = document.getElementById("f-num").value.trim();
+  const bairro = document.getElementById("f-bairro").value.trim();
+  const cidade = document.getElementById("f-cidade").value.trim();
+
+  if (!nome)   { showToast("Informe seu nome!", "error"); document.getElementById("f-nome").focus(); return; }
+  if (!tel)    { showToast("Informe seu telefone!", "error"); document.getElementById("f-tel").focus(); return; }
+  if (!rua)    { showToast("Informe a rua!", "error"); document.getElementById("f-rua").focus(); return; }
+  if (!num)    { showToast("Informe o número!", "error"); document.getElementById("f-num").focus(); return; }
+  if (!bairro) { showToast("Informe o bairro!", "error"); document.getElementById("f-bairro").focus(); return; }
+  if (!cidade) { showToast("Informe a cidade!", "error"); document.getElementById("f-cidade").focus(); return; }
+  if (!selectedPay) { showToast("Selecione a forma de pagamento!", "error"); return; }
+
+  buildReview();
+  goTo(3);
+}
+
+function buildReview() {
+  const nome    = document.getElementById("f-nome").value.trim();
+  const tel     = document.getElementById("f-tel").value.trim();
+  const rua     = document.getElementById("f-rua").value.trim();
+  const num     = document.getElementById("f-num").value.trim();
+  const comp    = document.getElementById("f-comp").value.trim();
+  const bairro  = document.getElementById("f-bairro").value.trim();
+  const cidade  = document.getElementById("f-cidade").value.trim();
+  const troco   = document.getElementById("f-troco").value.trim();
+  const cardTp  = document.getElementById("f-cartao-tipo").value;
+  const obs     = document.getElementById("f-obs").value.trim();
+
+  const payLabels = {dinheiro:"💵 Dinheiro",pix:"📱 Pix",cartao:"💳 Cartão"};
+  const payStr = payLabels[selectedPay] + (cardTp ? ` (${cardTp})` : "") + (troco ? ` — Troco para ${troco}` : "");
+  const enderecoStr = `${rua}, ${num}${comp?" - "+comp:""}, ${bairro}, ${cidade}`;
+
+  orderDraft = { nome, tel, rua, num, comp, bairro, cidade, troco, pagamento: payStr, obs, enderecoStr };
+
+  const rc = document.getElementById("review-content");
+  let itemsHtml = "";
+  cart.forEach(c => {
+    itemsHtml += `<div class="review-item-row">
+      <span>${c.emoji} ${c.name}${c.type?" ("+c.type+")":""} × ${c.qty}</span>
+      <span class="review-item-val">${fmt(c.price * c.qty)}</span>
+    </div>`;
+  });
+  
+
+  rc.innerHTML = `
+    <div class="review-block">
+      <div class="review-block-title">🛒 Itens do Pedido</div>
+      ${itemsHtml}
+    </div>
+    <div class="review-block">
+      <div class="review-block-title">👤 Dados do Cliente</div>
+      <div class="review-info-row"><span class="review-info-key">Nome</span><span>${nome}</span></div>
+      <div class="review-info-row"><span class="review-info-key">Telefone</span><span>${tel}</span></div>
+    </div>
+    <div class="review-block">
+      <div class="review-block-title">📍 Endereço</div>
+      <div class="review-info-row"><span>${enderecoStr}</span></div>
+    </div>
+    <div class="review-block">
+      <div class="review-block-title">💰 Pagamento</div>
+      <div class="review-info-row"><span>${payStr}</span></div>
+    </div>
+    ${obs ? `<div class="review-block"><div class="review-block-title">📝 Observações</div><div class="review-info-row"><span>${obs}</span></div></div>` : ""}
+    <div class="review-total-block" style="flex-direction:column;gap:8px;align-items:stretch;">
+      <div style="display:flex;justify-content:space-between;align-items:center;">
+        <div style="font-family:'Oswald',sans-serif;font-size:13px;letter-spacing:1px;color:var(--creme-dim);text-transform:uppercase;">Subtotal</div>
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:20px;color:var(--creme-dim);letter-spacing:1px;">${fmt(cartSubtotal())}</div>
+      </div>
+      <div style="display:flex;justify-content:space-between;align-items:center;">
+        <div style="font-family:'Oswald',sans-serif;font-size:13px;letter-spacing:1px;color:var(--creme-dim);text-transform:uppercase;">🛵 Taxa de entrega</div>
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:20px;color:var(--creme-dim);letter-spacing:1px;">${fmt(TAXA_ENTREGA)}</div>
+      </div>
+      <div style="border-top:1px solid var(--amarelo-dim);margin:4px 0;"></div>
+      <div style="display:flex;justify-content:space-between;align-items:center;">
+        <div class="review-total-label">TOTAL</div>
+        <div class="review-total-val">${fmt(cartTotal())}</div>
+      </div>
+    </div>`;
+}
+
+/* ════════════════════════════════════
+   CONFIRMAR E WHATSAPP
+════════════════════════════════════ */
+async function confirmOrder() {
+  const msg = buildWhatsAppMessage();
+  const url = "https://wa.me/" + WHATSAPP_NUMBER + "?text=" + encodeURIComponent(msg);
+  document.getElementById("whatsapp-link").href = url;
+
+  await saveOrderToPanel();
+
+  goTo(4);
+}
+
+async function saveOrderToPanel() {
+  const d = orderDraft;
+  const orderId = "NG-" + Date.now().toString().slice(-6);
+
+  // Salva no Supabase
+  const pedido = {
+    id:           orderId,
+    status:       "pendente",
+    cliente_nome: d.nome,
+    cliente_tel:  d.tel,
+    endereco:     d.enderecoStr,
+    pagamento:    d.pagamento,
+    obs:          d.obs || "",
+    items:        cart.map(c => ({ ...c })),
+    subtotal:     cartSubtotal(),
+    taxa_entrega: TAXA_ENTREGA,
+    total:        cartTotal()
+  };
+
+  const result = await supabaseFetch("/rest/v1/pedidos", {
+    method: "POST",
+    prefer: "return=minimal",
+    body: JSON.stringify(pedido)
+  });
+
+  if (result === null && result !== undefined) {
+    showToast("Erro ao salvar pedido. Verifique a conexão.", "error");
+    return;
+  }
+
+  // Mantém em memória local para exibir no painel
+  const orderLocal = {
+    id:        orderId,
+    createdAt: new Date().toISOString(),
+    status:    "pendente",
+    cliente:   { nome: d.nome, tel: d.tel },
+    endereco:  d.enderecoStr,
+    pagamento: d.pagamento,
+    obs:       d.obs || "",
+    items:     cart.map(c => ({ ...c })),
+    total:     cartTotal()
+  };
+  orders.unshift(orderLocal);
+  renderOrders();
+}
+
+function buildWhatsAppMessage() {
+  const d = orderDraft;
+  let lines = [];
+  lines.push("🔥 *NOVO PEDIDO — NA GARAGEM DELIVERY*");
+  lines.push("━━━━━━━━━━━━━━━━━━━━━");
+  lines.push("*🛒 ITENS:*");
+  cart.forEach(c => {
+    lines.push(`• ${c.emoji} ${c.name}${c.type?" ("+c.type+")":""} × ${c.qty} = ${fmt(c.price * c.qty)}`);
+  });
+  lines.push("━━━━━━━━━━━━━━━━━━━━━");
+  lines.push(`🛵 Taxa de entrega: ${fmt(TAXA_ENTREGA)}`);
+  lines.push(`✅ *TOTAL: ${fmt(cartTotal())}*`);
+  lines.push("━━━━━━━━━━━━━━━━━━━━━");
+  lines.push("*👤 CLIENTE:*");
+  lines.push(`Nome: ${d.nome}`);
+  lines.push(`Telefone: ${d.tel}`);
+  lines.push("━━━━━━━━━━━━━━━━━━━━━");
+  lines.push("*📍 ENDEREÇO:*");
+  lines.push(d.enderecoStr);
+  lines.push("━━━━━━━━━━━━━━━━━━━━━");
+  lines.push(`*💰 PAGAMENTO:* ${d.pagamento}`);
+  if (d.obs) { lines.push("━━━━━━━━━━━━━━━━━━━━━"); lines.push(`*📝 OBS:* ${d.obs}`); }
+  lines.push("━━━━━━━━━━━━━━━━━━━━━");
+  lines.push("⏱ Tempo estimado: ~45 minutos");
+  return lines.join("\n");
+}
+
+function newOrder() {
+  cart = [];
+  selectedPay = "";
+  orderDraft = {};
+  document.getElementById("order-form")?.reset?.();
+  document.querySelectorAll(".pay-option").forEach(o => o.classList.remove("selected"));
+  document.getElementById("troco-field").style.display = "none";
+  document.getElementById("cartao-type-field").style.display = "none";
+  updateCartUI();
+  goTo(1);
+}
+
+/* ════════════════════════════════════
+   TOAST
+════════════════════════════════════ */
+function showToast(msg, type="success") {
+  const el = document.getElementById("toast");
+  el.textContent = msg;
+  el.className = "show " + type;
+  clearTimeout(el._t);
+  el._t = setTimeout(() => el.className = "", 2800);
+}
+
+/* ════════════════════════════════════
+   PAINEL DO PROPRIETÁRIO
+════════════════════════════════════ */
+// ── Config ──────────────────────────
+const OWNER_PASSWORD = "garagem2025"; // ← ALTERE a senha aqui
+
+// ── State ────────────────────────────
+let orders = [];
+let ownerLoggedIn = false;
+let activeFilter  = "todos";
+let pendingStatusChange = null; // { orderId, newStatus }
+
+// ── Supabase: carregar pedidos ────────
+async function loadOrdersStorage() {
+  const data = await supabaseFetch(
+    "/rest/v1/pedidos?order=created_at.desc&limit=100"
+  );
+  if (!data) { orders = []; return; }
+
+  orders = data.map(p => ({
+    id:        p.id,
+    createdAt: p.created_at,
+    status:    p.status,
+    cliente:   { nome: p.cliente_nome, tel: p.cliente_tel },
+    endereco:  p.endereco,
+    pagamento: p.pagamento,
+    obs:       p.obs || "",
+    items:     p.items,
+    total:     p.total
+  }));
+}
+
+// ── Supabase: atualizar status ────────
+async function saveOrdersStorage() {
+  if (!pendingStatusChange) return;
+  const { orderId, newStatus } = pendingStatusChange;
+  await supabaseFetch(
+    `/rest/v1/pedidos?id=eq.${orderId}`,
+    { method: "PATCH", body: JSON.stringify({ status: newStatus }) }
+  );
+}
+
+// ── Login ────────────────────────────
+function openOwnerLogin() {
+  if (ownerLoggedIn) { openOwnerPanel(); return; }
+  const overlay = document.getElementById("owner-login-overlay");
+  overlay.style.display = "flex";
+  document.getElementById("owner-pass-input").value = "";
+  document.getElementById("owner-login-err").style.display = "none";
+  setTimeout(() => document.getElementById("owner-pass-input").focus(), 80);
+}
+function closeOwnerLogin() {
+  document.getElementById("owner-login-overlay").style.display = "none";
+}
+function closeOwnerLoginOnBg(e) {
+  if (e.target === document.getElementById("owner-login-overlay")) closeOwnerLogin();
+}
+function doOwnerLogin() {
+  const val = document.getElementById("owner-pass-input").value;
+  if (val === OWNER_PASSWORD) {
+    ownerLoggedIn = true;
+    closeOwnerLogin();
+    openOwnerPanel();
+  } else {
+    const errEl = document.getElementById("owner-login-err");
+    errEl.style.display = "block";
+    document.getElementById("owner-pass-input").value = "";
+    document.getElementById("owner-pass-input").focus();
+    setTimeout(() => errEl.style.display = "none", 3000);
+  }
+}
+
+// ── Panel ────────────────────────────
+async function openOwnerPanel() {
+  document.getElementById("orders-panel").style.display = "block";
+  document.body.style.overflow = "hidden";
+  document.getElementById("orders-list").innerHTML = `
+    <div style="text-align:center;padding:60px 0;color:var(--creme-dim);font-family:'Oswald',sans-serif;letter-spacing:1px;">
+      ⏳ Carregando pedidos...
+    </div>`;
+  await loadOrdersStorage();
+  renderOrders();
+}
+function closeOwnerPanel() {
+  document.getElementById("orders-panel").style.display = "none";
+  document.body.style.overflow = "";
+}
+
+// ── Filter ───────────────────────────
+function filterOrders(btn, filter) {
+  activeFilter = filter;
+  document.querySelectorAll(".orders-filter-btn").forEach(b => b.classList.remove("active"));
+  btn.classList.add("active");
+  renderOrders();
+}
+
+// ── Render ───────────────────────────
+const STATUS_LABELS = {
+  pendente:     "⏳ Pendente",
+  em_andamento: "🔥 Em Andamento",
+  finalizado:   "✅ Finalizado",
+  cancelado:    "❌ Cancelado"
+};
+const STATUS_BADGE_CLASSES = {
+  pendente: "badge-pendente",
+  em_andamento: "badge-em_andamento",
+  finalizado: "badge-finalizado",
+  cancelado: "badge-cancelado"
+};
+const NEXT_STATUSES = {
+  pendente:     ["em_andamento", "cancelado"],
+  em_andamento: ["finalizado",   "cancelado"],
+  finalizado:   [],
+  cancelado:    ["pendente"]
+};
+
+function renderOrders() {
+  const list    = document.getElementById("orders-list");
+  const emptyEl = document.getElementById("orders-empty");
+  const counter = document.getElementById("orders-counter");
+
+  const filtered = activeFilter === "todos"
+    ? orders
+    : orders.filter(o => o.status === activeFilter);
+
+  counter.textContent = orders.length + " pedido" + (orders.length !== 1 ? "s" : "");
+
+  if (!filtered.length) {
+    list.innerHTML = "";
+    emptyEl.style.display = "block";
+    return;
+  }
+  emptyEl.style.display = "none";
+
+  list.innerHTML = filtered.map(order => {
+    const nextBtns = NEXT_STATUSES[order.status].map(s => {
+      const labels = { em_andamento:"🔥 Iniciar", finalizado:"✅ Finalizar", cancelado:"❌ Cancelar", pendente:"↩️ Reabrir" };
+      return `<button class="status-select-btn btn-${s}" onclick="requestStatusChange('${order.id}','${s}')">${labels[s]}</button>`;
+    }).join("");
+
+    const itemsList = order.items.map(i =>
+      `<div style="display:flex;justify-content:space-between;font-family:'Oswald',sans-serif;font-size:12px;color:var(--creme-dim);padding:3px 0;border-bottom:1px solid var(--preto-border);">
+        <span>${i.emoji} ${i.name}${i.type?" ("+i.type+")":""} × ${i.qty}</span>
+        <span style="color:var(--amarelo);">${fmt(i.price * i.qty)}</span>
+      </div>`
+    ).join("");
+
+    const dateStr = new Date(order.createdAt).toLocaleString("pt-BR",{day:"2-digit",month:"2-digit",year:"2-digit",hour:"2-digit",minute:"2-digit"});
+
+    return `<div class="order-card status-${order.status}" id="order-card-${order.id}">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:10px;margin-bottom:14px;">
+        <div>
+          <div style="font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:3px;color:var(--amarelo);">${order.id}</div>
+          <div style="font-family:'Oswald',sans-serif;font-size:11px;color:var(--creme-dim);letter-spacing:1px;margin-top:2px;">⏰ ${dateStr}</div>
+        </div>
+        <span class="order-status-badge ${STATUS_BADGE_CLASSES[order.status]}">${STATUS_LABELS[order.status]}</span>
+      </div>
+
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin-bottom:14px;">
+        <div style="background:var(--preto-surface);border:1px solid var(--preto-border);padding:12px;">
+          <div style="font-family:'Oswald',sans-serif;font-size:10px;letter-spacing:2px;color:var(--creme-dim);text-transform:uppercase;margin-bottom:6px;">👤 Cliente</div>
+          <div style="font-family:'Oswald',sans-serif;font-size:14px;font-weight:700;color:var(--creme);">${order.cliente.nome}</div>
+          <div style="font-family:'Oswald',sans-serif;font-size:12px;color:var(--creme-dim);">📱 ${order.cliente.tel}</div>
+        </div>
+        <div style="background:var(--preto-surface);border:1px solid var(--preto-border);padding:12px;">
+          <div style="font-family:'Oswald',sans-serif;font-size:10px;letter-spacing:2px;color:var(--creme-dim);text-transform:uppercase;margin-bottom:6px;">📍 Endereço</div>
+          <div style="font-family:'Oswald',sans-serif;font-size:12px;color:var(--creme);line-height:1.4;">${order.endereco}</div>
+        </div>
+        <div style="background:var(--preto-surface);border:1px solid var(--preto-border);padding:12px;">
+          <div style="font-family:'Oswald',sans-serif;font-size:10px;letter-spacing:2px;color:var(--creme-dim);text-transform:uppercase;margin-bottom:6px;">💰 Pagamento</div>
+          <div style="font-family:'Oswald',sans-serif;font-size:12px;color:var(--creme);">${order.pagamento}</div>
+        </div>
+      </div>
+
+      <div style="background:var(--preto-surface);border:1px solid var(--preto-border);padding:12px;margin-bottom:14px;">
+        <div style="font-family:'Oswald',sans-serif;font-size:10px;letter-spacing:2px;color:var(--creme-dim);text-transform:uppercase;margin-bottom:8px;">🛒 Itens</div>
+        ${itemsList}
+        <div style="display:flex;justify-content:flex-end;margin-top:10px;">
+          <div style="font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:2px;color:var(--amarelo);">TOTAL: ${fmt(order.total)}</div>
+        </div>
+      </div>
+
+      ${order.obs ? `<div style="background:rgba(245,197,24,0.05);border:1px solid var(--amarelo-dim);padding:10px 12px;margin-bottom:14px;font-family:'Oswald',sans-serif;font-size:12px;color:var(--creme-dim);letter-spacing:0.5px;">📝 <em>${order.obs}</em></div>` : ""}
+
+      <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;justify-content:space-between;">
+        <div style="display:flex;gap:8px;flex-wrap:wrap;">${nextBtns}</div>
+        <button onclick="sendWhatsAppUpdate('${order.id}')" style="background:rgba(37,211,102,0.12);border:1px solid #25D366;color:#25D366;padding:7px 14px;cursor:pointer;font-family:'Oswald',sans-serif;font-size:12px;letter-spacing:1px;text-transform:uppercase;transition:all 0.15s;white-space:nowrap;" onmouseover="this.style.background='rgba(37,211,102,0.22)'" onmouseout="this.style.background='rgba(37,211,102,0.12)'">
+          📲 Notificar Cliente
+        </button>
+      </div>
+    </div>`;
+  }).join("");
+}
+
+// ── Status Change ─────────────────────
+function requestStatusChange(orderId, newStatus) {
+  const order = orders.find(o => o.id === orderId);
+  if (!order) return;
+  pendingStatusChange = { orderId, newStatus };
+
+  const statusLabels = { em_andamento:"Em Andamento 🔥", finalizado:"Finalizado ✅", cancelado:"Cancelado ❌", pendente:"Pendente ⏳" };
+  const modal = document.getElementById("status-modal");
+  document.getElementById("status-modal-desc").innerHTML =
+    `Pedido <strong style="color:var(--amarelo)">${orderId}</strong> — ${order.cliente.nome}<br><br>` +
+    `Mudar status para: <strong style="color:var(--creme)">${statusLabels[newStatus]}</strong><br><br>` +
+    `<span style="font-size:11px;color:var(--creme-dim);">Uma notificação WhatsApp será enviada automaticamente ao cliente.</span>`;
+  modal.style.display = "flex";
+}
+
+function closeStatusModal() {
+  document.getElementById("status-modal").style.display = "none";
+  pendingStatusChange = null;
+}
+
+async function confirmStatusChange() {
+  if (!pendingStatusChange) return;
+  const { orderId, newStatus } = pendingStatusChange;
+  const order = orders.find(o => o.id === orderId);
+  if (!order) { closeStatusModal(); return; }
+
+  order.status = newStatus;
+  closeStatusModal();
+
+  await saveOrdersStorage();
+  renderOrders();
+
+  // Auto-send WhatsApp notification
+  sendWhatsAppUpdate(orderId, true);
+  showToast("Status atualizado! Notificação enviada.", "success");
+}
+
+// ── WhatsApp Notification ─────────────
+function sendWhatsAppUpdate(orderId, auto = false) {
+  const order = orders.find(o => o.id === orderId);
+  if (!order) return;
+
+  const statusMsg = {
+    pendente:     "⏳ *Pendente* — Aguardando confirmação",
+    em_andamento: "🔥 *Em Andamento* — Seu espeto já está na brasa!",
+    finalizado:   "✅ *Finalizado* — Pedido entregue. Obrigado!",
+    cancelado:    "❌ *Cancelado* — Pedido cancelado. Entre em contato para mais informações."
+  };
+
+  const lines = [
+    `🍖 *NA GARAGEM DELIVERY — Atualização de Pedido*`,
+    `━━━━━━━━━━━━━━━━━━━━━`,
+    `Olá, *${order.cliente.nome}*! 👋`,
+    ``,
+    `Seu pedido *${order.id}* foi atualizado:`,
+    ``,
+    `📦 Status: ${statusMsg[order.status]}`,
+    ``,
+    `━━━━━━━━━━━━━━━━━━━━━`,
+    `🛒 *Seus itens:*`,
+    ...order.items.map(i => `• ${i.emoji} ${i.name}${i.type?" ("+i.type+")":""} × ${i.qty}`),
+    ``,
+    `💰 Total: *${fmt(order.total)}*`,
+    `━━━━━━━━━━━━━━━━━━━━━`,
+    `Dúvidas? Fale com a gente! 🙌`
+  ];
+
+  const msg = lines.join("\n");
+  const telClean = order.cliente.tel.replace(/\D/g, "");
+  const telFull  = telClean.startsWith("55") ? telClean : "55" + telClean;
+  const url = `https://wa.me/${telFull}?text=${encodeURIComponent(msg)}`;
+
+  if (!auto) {
+    window.open(url, "_blank");
+  } else {
+    // Open WhatsApp link to send the message
+    const a = document.createElement("a");
+    a.href = url;
+    a.target = "_blank";
+    a.rel = "noopener";
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+  }
+}
+
+/* ════════════════════════════════════
+   INIT
+════════════════════════════════════ */
+renderMenu();
+updateCartUI();
+</script>
+
+<!-- ═══ OWNER LOGIN MODAL ═══ -->
+<div id="owner-login-overlay" style="display:none;position:fixed;inset:0;z-index:500;background:rgba(0,0,0,0.85);backdrop-filter:blur(4px);align-items:center;justify-content:center;" onclick="closeOwnerLoginOnBg(event)">
+  <div style="background:var(--preto-card);border:2px solid var(--amarelo);padding:40px 36px;max-width:380px;width:90%;position:relative;animation:cardIn 0.3s ease both;">
+    <div style="position:absolute;top:0;left:0;border-style:solid;border-width:22px 22px 0 0;border-color:var(--amarelo) transparent transparent transparent;"></div>
+    <div style="text-align:center;margin-bottom:28px;">
+      <div style="font-size:40px;margin-bottom:8px;">🔐</div>
+      <div style="font-family:&#39;Bebas Neue&#39;,sans-serif;font-size:28px;letter-spacing:4px;color:var(--amarelo);">ACESSO RESTRITO</div>
+      <div style="font-family:&#39;Oswald&#39;,sans-serif;font-size:11px;letter-spacing:2px;color:var(--creme-dim);text-transform:uppercase;margin-top:4px;">Painel do Proprietário</div>
+    </div>
+    <div style="margin-bottom:20px;">
+      <label style="font-family:&#39;Oswald&#39;,sans-serif;font-size:12px;letter-spacing:1.5px;text-transform:uppercase;color:var(--creme-dim);display:block;margin-bottom:8px;">Senha</label>
+      <input type="password" id="owner-pass-input" placeholder="••••••••" style="width:100%;background:var(--preto-surface);border:2px solid var(--preto-border);color:var(--creme);font-family:&#39;Oswald&#39;,sans-serif;font-size:16px;padding:12px 14px;outline:none;transition:border-color 0.2s;letter-spacing:4px;" onkeydown="if(event.key===&#39;Enter&#39;)doOwnerLogin()" onfocus="this.style.borderColor=&#39;var(--amarelo-dim)&#39;" onblur="this.style.borderColor=&#39;var(--preto-border)&#39;">
+    </div>
+    <div id="owner-login-err" style="display:none;background:rgba(192,57,43,0.15);border:1px solid var(--vermelho);color:#f87171;font-family:&#39;Oswald&#39;,sans-serif;font-size:12px;letter-spacing:1px;padding:10px 14px;margin-bottom:16px;text-align:center;">Senha incorreta. Tente novamente.</div>
+    <button onclick="doOwnerLogin()" style="width:100%;background:var(--amarelo);color:var(--preto);border:none;padding:14px;font-family:&#39;Bebas Neue&#39;,sans-serif;font-size:18px;letter-spacing:3px;cursor:pointer;clip-path:polygon(8px 0%,100% 0%,calc(100% - 8px) 100%,0% 100%);transition:background 0.2s;" onmouseover="this.style.background=&#39;var(--amarelo-hover)&#39;" onmouseout="this.style.background=&#39;var(--amarelo)&#39;">ENTRAR</button>
+    <button onclick="closeOwnerLogin()" style="width:100%;background:transparent;color:var(--creme-dim);border:1px solid var(--preto-border);padding:11px;font-family:&#39;Oswald&#39;,sans-serif;font-size:12px;letter-spacing:2px;cursor:pointer;margin-top:10px;text-transform:uppercase;transition:all 0.2s;" onmouseover="this.style.borderColor=&#39;var(--creme-dim)&#39;" onmouseout="this.style.borderColor=&#39;var(--preto-border)&#39;">Cancelar</button>
+  </div>
+</div>
+
+<!-- ═══ ORDERS PANEL (full overlay) ═══ -->
+<div id="orders-panel" style="display:none;position:fixed;inset:0;z-index:400;background:var(--preto);overflow-y:auto;">
+  <div style="background:var(--preto);border-bottom:3px solid var(--amarelo);box-shadow:0 4px 28px rgba(245,197,24,0.15);display:flex;align-items:center;justify-content:space-between;padding:12px 20px;position:sticky;top:0;z-index:10;">
+    <div>
+      <div style="font-family:&#39;Bebas Neue&#39;,sans-serif;font-size:22px;letter-spacing:4px;color:var(--amarelo);">🍖 NA GARAGEM — PEDIDOS</div>
+      <div style="font-family:&#39;Oswald&#39;,sans-serif;font-size:10px;letter-spacing:2px;color:var(--creme-dim);text-transform:uppercase;">Painel do Proprietário</div>
+    </div>
+    <div style="display:flex;gap:10px;align-items:center;">
+      <div id="orders-counter" style="font-family:&#39;Bebas Neue&#39;,sans-serif;font-size:16px;letter-spacing:2px;color:var(--amarelo);background:var(--preto-surface);border:1px solid var(--amarelo-dim);padding:6px 14px;"></div>
+      <button onclick="closeOwnerPanel()" style="background:var(--preto-surface);border:1px solid var(--preto-border);color:var(--creme-dim);width:38px;height:38px;cursor:pointer;font-size:18px;display:flex;align-items:center;justify-content:center;transition:all 0.15s;" onmouseover="this.style.borderColor=&#39;var(--vermelho)&#39;;this.style.color=&#39;var(--vermelho)&#39;" onmouseout="this.style.borderColor=&#39;var(--preto-border)&#39;;this.style.color=&#39;var(--creme-dim)&#39;">✕</button>
+    </div>
+  </div>
+
+  <!-- Filter bar -->
+  <div style="max-width:1200px;margin:20px auto 0;padding:0 16px;">
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:24px;">
+      <button class="orders-filter-btn active" data-filter="todos" onclick="filterOrders(this,&#39;todos&#39;)">Todos</button>
+      <button class="orders-filter-btn" data-filter="pendente" onclick="filterOrders(this,&#39;pendente&#39;)">⏳ Pendentes</button>
+      <button class="orders-filter-btn" data-filter="em_andamento" onclick="filterOrders(this,&#39;em_andamento&#39;)">🔥 Em Andamento</button>
+      <button class="orders-filter-btn" data-filter="finalizado" onclick="filterOrders(this,&#39;finalizado&#39;)">✅ Finalizados</button>
+      <button class="orders-filter-btn" data-filter="cancelado" onclick="filterOrders(this,&#39;cancelado&#39;)">❌ Cancelados</button>
+    </div>
+    <div id="orders-list" style="display:flex;flex-direction:column;gap:16px;padding-bottom:80px;"></div>
+    <div id="orders-empty" style="display:none;text-align:center;padding:80px 0;color:var(--creme-dim);">
+      <div style="font-size:60px;opacity:0.3;margin-bottom:16px;">📋</div>
+      <div style="font-family:&#39;Bebas Neue&#39;,sans-serif;font-size:24px;letter-spacing:3px;">Nenhum pedido ainda</div>
+      <div style="font-family:&#39;Oswald&#39;,sans-serif;font-size:13px;margin-top:8px;letter-spacing:1px;">Os pedidos confirmados aparecerão aqui</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ STATUS CHANGE CONFIRMATION MODAL ═══ -->
+<div id="status-modal" style="display:none;position:fixed;inset:0;z-index:600;background:rgba(0,0,0,0.85);backdrop-filter:blur(4px);align-items:center;justify-content:center;">
+  <div style="background:var(--preto-card);border:2px solid var(--amarelo-dim);padding:32px;max-width:400px;width:90%;animation:cardIn 0.25s ease both;position:relative;">
+    <div style="position:absolute;top:0;left:0;border-style:solid;border-width:18px 18px 0 0;border-color:var(--amarelo-dim) transparent transparent transparent;"></div>
+    <div style="font-family:&#39;Bebas Neue&#39;,sans-serif;font-size:22px;letter-spacing:3px;color:var(--amarelo);margin-bottom:8px;">Alterar Status</div>
+    <div id="status-modal-desc" style="font-family:&#39;Oswald&#39;,sans-serif;font-size:13px;color:var(--creme-dim);letter-spacing:0.5px;margin-bottom:20px;line-height:1.6;"></div>
+    <div style="display:flex;gap:10px;">
+      <button onclick="confirmStatusChange()" id="status-modal-confirm" style="flex:1;background:var(--amarelo);color:var(--preto);border:none;padding:12px;font-family:&#39;Bebas Neue&#39;,sans-serif;font-size:16px;letter-spacing:2px;cursor:pointer;clip-path:polygon(6px 0%,100% 0%,calc(100% - 6px) 100%,0% 100%);transition:background 0.2s;" onmouseover="this.style.background=&#39;var(--amarelo-hover)&#39;" onmouseout="this.style.background=&#39;var(--amarelo)&#39;">CONFIRMAR</button>
+      <button onclick="closeStatusModal()" style="flex:1;background:transparent;color:var(--creme-dim);border:1px solid var(--preto-border);padding:12px;font-family:&#39;Oswald&#39;,sans-serif;font-size:13px;letter-spacing:1px;cursor:pointer;text-transform:uppercase;transition:all 0.2s;" onmouseover="this.style.borderColor=&#39;var(--creme-dim)&#39;" onmouseout="this.style.borderColor=&#39;var(--preto-border)&#39;">Cancelar</button>
+    </div>
+  </div>
+</div>
+
+</body></html>
