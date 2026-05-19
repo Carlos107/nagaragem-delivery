@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- saved from url=(0045)file:///C:/Users/junio/Downloads/index_7.html -->
+<!-- saved from url=(0060)file:///C:/Users/junio/Downloads/Na_Garagem_Delivery_v2.html -->
 <html lang="pt-BR"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -1268,12 +1268,206 @@ function renderOrders() {
 
       <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;justify-content:space-between;">
         <div style="display:flex;gap:8px;flex-wrap:wrap;">${nextBtns}</div>
-        <button onclick="sendWhatsAppUpdate('${order.id}')" style="background:rgba(37,211,102,0.12);border:1px solid #25D366;color:#25D366;padding:7px 14px;cursor:pointer;font-family:'Oswald',sans-serif;font-size:12px;letter-spacing:1px;text-transform:uppercase;transition:all 0.15s;white-space:nowrap;" onmouseover="this.style.background='rgba(37,211,102,0.22)'" onmouseout="this.style.background='rgba(37,211,102,0.12)'">
-          📲 Notificar Cliente
-        </button>
+        <div style="display:flex;gap:6px;flex-wrap:wrap;">
+          ${order.status === 'em_andamento' ? `<button onclick="waNotificar('${order.id}','saiu_entrega')" style="background:rgba(37,211,102,0.10);border:1px solid #25D366;color:#25D366;padding:7px 12px;cursor:pointer;font-family:'Oswald',sans-serif;font-size:11px;letter-spacing:1px;text-transform:uppercase;transition:all 0.15s;white-space:nowrap;" onmouseover="this.style.background='rgba(37,211,102,0.22)'" onmouseout="this.style.background='rgba(37,211,102,0.10)'">🛵 Saiu p/ Entrega</button>` : ''}
+          ${order.status !== 'cancelado' && order.status !== 'pendente' ? `<button onclick="waNotificar('${order.id}','cobranca')" style="background:rgba(245,197,24,0.08);border:1px solid var(--amarelo-dim);color:var(--amarelo);padding:7px 12px;cursor:pointer;font-family:'Oswald',sans-serif;font-size:11px;letter-spacing:1px;text-transform:uppercase;transition:all 0.15s;white-space:nowrap;" onmouseover="this.style.background='rgba(245,197,24,0.15)'" onmouseout="this.style.background='rgba(245,197,24,0.08)'">💰 Cobrança</button>` : ''}
+          <button onclick="waNotificar('${order.id}','${order.status}')" style="background:rgba(37,211,102,0.12);border:1px solid #25D366;color:#25D366;padding:7px 14px;cursor:pointer;font-family:'Oswald',sans-serif;font-size:12px;letter-spacing:1px;text-transform:uppercase;transition:all 0.15s;white-space:nowrap;" onmouseover="this.style.background='rgba(37,211,102,0.22)'" onmouseout="this.style.background='rgba(37,211,102,0.12)'">
+            📲 Notificar
+          </button>
+        </div>
       </div>
     </div>`;
   }).join("");
+}
+
+/* ════════════════════════════════════
+   WHATSAPP — LOG, DEDUPLICAÇÃO E AUTOMAÇÕES
+════════════════════════════════════ */
+
+// Chave do localStorage para logs de notificações
+const WA_LOG_KEY = "nagaragem_wa_log";
+
+// Retorna todos os logs salvos
+function waGetLogs() {
+  try { return JSON.parse(localStorage.getItem(WA_LOG_KEY) || "[]"); }
+  catch { return []; }
+}
+
+// Salva um novo log de notificação
+function waSaveLog(orderId, status, success, obs = "") {
+  const logs = waGetLogs();
+  logs.unshift({
+    orderId, status, success,
+    obs,
+    ts: new Date().toISOString()
+  });
+  // Mantém só os últimos 200 registros
+  localStorage.setItem(WA_LOG_KEY, JSON.stringify(logs.slice(0, 200)));
+}
+
+// Verifica se já foi notificado para este pedido + status (anti-duplicata)
+function waJaNotificou(orderId, status) {
+  return waGetLogs().some(l => l.orderId === orderId && l.status === status && l.success);
+}
+
+// Templates de mensagem para cada status
+const WA_TEMPLATES = {
+  em_andamento: (order) => [
+    `🔥 *NA GARAGEM DELIVERY — Pedido em Andamento!*`,
+    `━━━━━━━━━━━━━━━━━━━━━`,
+    `Olá, *${order.cliente.nome}*! 👋`,
+    ``,
+    `Ótima notícia! Seu pedido *${order.id}* está sendo preparado agora. 🥩🔥`,
+    ``,
+    `🛒 *Itens:*`,
+    ...order.items.map(i => `• ${i.emoji} ${i.name}${i.type ? " (" + i.type + ")" : ""} × ${i.qty}`),
+    ``,
+    `💰 Total: *${fmt(order.total)}*`,
+    `📍 Endereço: ${order.endereco}`,
+    ``,
+    `⏱ Previsão: ~45 minutos`,
+    `━━━━━━━━━━━━━━━━━━━━━`,
+    `Qualquer dúvida, é só chamar! 😊`
+  ].join("\n"),
+
+  saiu_entrega: (order) => [
+    `🛵 *NA GARAGEM DELIVERY — Saiu para Entrega!*`,
+    `━━━━━━━━━━━━━━━━━━━━━`,
+    `Olá, *${order.cliente.nome}*! 👋`,
+    ``,
+    `Seu pedido *${order.id}* saiu para entrega agora! 🚀`,
+    ``,
+    `📍 Destino: ${order.endereco}`,
+    `💰 Total: *${fmt(order.total)}*`,
+    `💳 Pagamento: ${order.pagamento}`,
+    ``,
+    `Fique de olho, chegamos em breve! 🥩`,
+    `━━━━━━━━━━━━━━━━━━━━━`
+  ].join("\n"),
+
+  finalizado: (order) => [
+    `✅ *NA GARAGEM DELIVERY — Pedido Entregue!*`,
+    `━━━━━━━━━━━━━━━━━━━━━`,
+    `Olá, *${order.cliente.nome}*! 👋`,
+    ``,
+    `Seu pedido *${order.id}* foi entregue! Bom apetite! 😋🥩`,
+    ``,
+    `💰 Total pago: *${fmt(order.total)}*`,
+    ``,
+    `Obrigado pela preferência! Volte sempre. 🙏🔥`,
+    `━━━━━━━━━━━━━━━━━━━━━`
+  ].join("\n"),
+
+  cancelado: (order) => [
+    `❌ *NA GARAGEM DELIVERY — Pedido Cancelado*`,
+    `━━━━━━━━━━━━━━━━━━━━━`,
+    `Olá, *${order.cliente.nome}*! 👋`,
+    ``,
+    `Infelizmente seu pedido *${order.id}* precisou ser cancelado.`,
+    ``,
+    `Entre em contato para mais informações. Pedimos desculpas! 🙏`,
+    `━━━━━━━━━━━━━━━━━━━━━`
+  ].join("\n"),
+
+  cobranca: (order) => [
+    `💰 *NA GARAGEM DELIVERY — Lembrete de Pagamento*`,
+    `━━━━━━━━━━━━━━━━━━━━━`,
+    `Olá, *${order.cliente.nome}*! 👋`,
+    ``,
+    `Notamos que o pagamento do pedido *${order.id}* ainda está pendente.`,
+    ``,
+    `💰 Valor: *${fmt(order.total)}*`,
+    `💳 Forma: ${order.pagamento}`,
+    ``,
+    `Por favor, regularize assim que possível. Obrigado! 🙏`,
+    `━━━━━━━━━━━━━━━━━━━━━`
+  ].join("\n"),
+};
+
+// Função principal de notificação WhatsApp
+function waNotificar(orderId, statusKey, auto = false) {
+  const order = orders.find(o => o.id === orderId);
+  if (!order) {
+    waSaveLog(orderId, statusKey, false, "Pedido não encontrado");
+    return;
+  }
+
+  // Anti-duplicata: se já enviou com sucesso para este status, pergunta antes de reenviar
+  if (auto && waJaNotificou(orderId, statusKey)) {
+    waSaveLog(orderId, statusKey, false, "Ignorado: já notificado anteriormente");
+    showToast("⚠️ Notificação já enviada para este status.", "info");
+    return;
+  }
+
+  const template = WA_TEMPLATES[statusKey];
+  if (!template) {
+    waSaveLog(orderId, statusKey, false, "Template não encontrado: " + statusKey);
+    return;
+  }
+
+  const msg      = template(order);
+  const telClean = order.cliente.tel.replace(/\D/g, "");
+  const telFull  = telClean.startsWith("55") ? telClean : "55" + telClean;
+  const url      = `https://wa.me/${telFull}?text=${encodeURIComponent(msg)}`;
+
+  // Registra log ANTES de abrir (sucesso presumido — usuário verá a tela)
+  waSaveLog(orderId, statusKey, true);
+
+  // Abre WhatsApp Web/App com a mensagem pré-preenchida
+  window.open(url, "_blank", "noopener");
+
+  // Feedback visual
+  if (!auto) showToast(`📲 WhatsApp aberto para ${order.cliente.nome}!`, "success");
+}
+
+// Abre modal de log de notificações
+function abrirLogWA() {
+  const logs = waGetLogs();
+  const statusLabel = {
+    em_andamento: "🔥 Em Andamento",
+    saiu_entrega: "🛵 Saiu p/ Entrega",
+    finalizado:   "✅ Finalizado",
+    cancelado:    "❌ Cancelado",
+    cobranca:     "💰 Cobrança",
+    manual:       "📲 Manual"
+  };
+
+  let rows = "";
+  if (!logs.length) {
+    rows = `<div style="text-align:center;padding:40px 0;color:var(--creme-dim);font-family:'Oswald',sans-serif;font-size:13px;letter-spacing:1px;">Nenhuma notificação registrada ainda.</div>`;
+  } else {
+    rows = logs.map(l => {
+      const dt = new Date(l.ts).toLocaleString("pt-BR",{day:"2-digit",month:"2-digit",hour:"2-digit",minute:"2-digit"});
+      const cor = l.success ? "#25D366" : "var(--vermelho)";
+      const icone = l.success ? "✅" : "❌";
+      return `<div style="display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--preto-border);gap:10px;flex-wrap:wrap;">
+        <div>
+          <span style="font-family:'Bebas Neue',sans-serif;font-size:14px;letter-spacing:2px;color:var(--amarelo);">${l.orderId}</span>
+          <span style="font-family:'Oswald',sans-serif;font-size:11px;color:var(--creme-dim);margin-left:8px;">${statusLabel[l.status] || l.status}</span>
+          ${l.obs ? `<div style="font-size:10px;color:var(--vermelho);margin-top:2px;">${l.obs}</div>` : ""}
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;">
+          <span style="font-family:'Oswald',sans-serif;font-size:11px;color:var(--creme-dim);">${dt}</span>
+          <span style="font-size:16px;">${icone}</span>
+        </div>
+      </div>`;
+    }).join("");
+  }
+
+  document.getElementById("wa-log-body").innerHTML = rows;
+  document.getElementById("wa-log-modal").style.display = "flex";
+}
+
+function fecharLogWA() {
+  document.getElementById("wa-log-modal").style.display = "none";
+}
+
+function limparLogWA() {
+  if (confirm("Apagar todo o histórico de notificações?")) {
+    localStorage.removeItem(WA_LOG_KEY);
+    fecharLogWA();
+    showToast("Histórico limpo.", "success");
+  }
 }
 
 // ── Status Change ─────────────────────
@@ -1283,11 +1477,18 @@ function requestStatusChange(orderId, newStatus) {
   pendingStatusChange = { orderId, newStatus };
 
   const statusLabels = { em_andamento:"Em Andamento 🔥", finalizado:"Finalizado ✅", cancelado:"Cancelado ❌", pendente:"Pendente ⏳" };
+
+  // Verifica se já foi notificado (avisa no modal)
+  const jaNotificou = waJaNotificou(orderId, newStatus);
+  const avisoLog = jaNotificou
+    ? `<div style="margin-top:10px;background:rgba(245,197,24,0.08);border:1px solid var(--amarelo-dim);padding:8px 12px;font-size:11px;color:var(--amarelo);">⚠️ Este cliente já recebeu notificação para este status. O WhatsApp não será reaberto automaticamente.</div>`
+    : `<div style="margin-top:10px;font-size:11px;color:#25D366;">📲 WhatsApp abrirá automaticamente com a mensagem pronta. Basta clicar em Enviar.</div>`;
+
   const modal = document.getElementById("status-modal");
   document.getElementById("status-modal-desc").innerHTML =
     `Pedido <strong style="color:var(--amarelo)">${orderId}</strong> — ${order.cliente.nome}<br><br>` +
-    `Mudar status para: <strong style="color:var(--creme)">${statusLabels[newStatus]}</strong><br><br>` +
-    `<span style="font-size:11px;color:var(--creme-dim);">Uma notificação WhatsApp será enviada automaticamente ao cliente.</span>`;
+    `Mudar status para: <strong style="color:var(--creme)">${statusLabels[newStatus]}</strong>` +
+    avisoLog;
   modal.style.display = "flex";
 }
 
@@ -1308,58 +1509,9 @@ async function confirmStatusChange() {
   await saveOrdersStorage();
   renderOrders();
 
-  // Auto-send WhatsApp notification
-  sendWhatsAppUpdate(orderId, true);
-  showToast("Status atualizado! Notificação enviada.", "success");
-}
-
-// ── WhatsApp Notification ─────────────
-function sendWhatsAppUpdate(orderId, auto = false) {
-  const order = orders.find(o => o.id === orderId);
-  if (!order) return;
-
-  const statusMsg = {
-    pendente:     "⏳ *Pendente* — Aguardando confirmação",
-    em_andamento: "🔥 *Em Andamento* — Seu espeto já está na brasa!",
-    finalizado:   "✅ *Finalizado* — Pedido entregue. Obrigado!",
-    cancelado:    "❌ *Cancelado* — Pedido cancelado. Entre em contato para mais informações."
-  };
-
-  const lines = [
-    `🍖 *NA GARAGEM DELIVERY — Atualização de Pedido*`,
-    `━━━━━━━━━━━━━━━━━━━━━`,
-    `Olá, *${order.cliente.nome}*! 👋`,
-    ``,
-    `Seu pedido *${order.id}* foi atualizado:`,
-    ``,
-    `📦 Status: ${statusMsg[order.status]}`,
-    ``,
-    `━━━━━━━━━━━━━━━━━━━━━`,
-    `🛒 *Seus itens:*`,
-    ...order.items.map(i => `• ${i.emoji} ${i.name}${i.type?" ("+i.type+")":""} × ${i.qty}`),
-    ``,
-    `💰 Total: *${fmt(order.total)}*`,
-    `━━━━━━━━━━━━━━━━━━━━━`,
-    `Dúvidas? Fale com a gente! 🙌`
-  ];
-
-  const msg = lines.join("\n");
-  const telClean = order.cliente.tel.replace(/\D/g, "");
-  const telFull  = telClean.startsWith("55") ? telClean : "55" + telClean;
-  const url = `https://wa.me/${telFull}?text=${encodeURIComponent(msg)}`;
-
-  if (!auto) {
-    window.open(url, "_blank");
-  } else {
-    // Open WhatsApp link to send the message
-    const a = document.createElement("a");
-    a.href = url;
-    a.target = "_blank";
-    a.rel = "noopener";
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-  }
+  // Dispara notificação WhatsApp automaticamente
+  waNotificar(orderId, newStatus, true);
+  showToast("✅ Status atualizado! WhatsApp aberto.", "success");
 }
 
 /* ════════════════════════════════════
@@ -1397,6 +1549,7 @@ updateCartUI();
     </div>
     <div style="display:flex;gap:10px;align-items:center;">
       <div id="orders-counter" style="font-family:&#39;Bebas Neue&#39;,sans-serif;font-size:16px;letter-spacing:2px;color:var(--amarelo);background:var(--preto-surface);border:1px solid var(--amarelo-dim);padding:6px 14px;"></div>
+      <button onclick="abrirLogWA()" style="background:rgba(37,211,102,0.10);border:1px solid #25D366;color:#25D366;padding:6px 14px;cursor:pointer;font-family:&#39;Oswald&#39;,sans-serif;font-size:11px;letter-spacing:1px;text-transform:uppercase;transition:all 0.15s;white-space:nowrap;" onmouseover="this.style.background=&#39;rgba(37,211,102,0.22)&#39;" onmouseout="this.style.background=&#39;rgba(37,211,102,0.10)&#39;">📋 Log WA</button>
       <button onclick="closeOwnerPanel()" style="background:var(--preto-surface);border:1px solid var(--preto-border);color:var(--creme-dim);width:38px;height:38px;cursor:pointer;font-size:18px;display:flex;align-items:center;justify-content:center;transition:all 0.15s;" onmouseover="this.style.borderColor=&#39;var(--vermelho)&#39;;this.style.color=&#39;var(--vermelho)&#39;" onmouseout="this.style.borderColor=&#39;var(--preto-border)&#39;;this.style.color=&#39;var(--creme-dim)&#39;">✕</button>
     </div>
   </div>
@@ -1419,6 +1572,24 @@ updateCartUI();
   </div>
 </div>
 
+<!-- ═══ WHATSAPP LOG MODAL ═══ -->
+<div id="wa-log-modal" style="display:none;position:fixed;inset:0;z-index:700;background:rgba(0,0,0,0.88);backdrop-filter:blur(4px);align-items:center;justify-content:center;">
+  <div style="background:var(--preto-card);border:2px solid #25D366;padding:0;max-width:520px;width:92%;max-height:80vh;display:flex;flex-direction:column;animation:cardIn 0.25s ease both;position:relative;">
+    <div style="padding:20px 24px 16px;border-bottom:1px solid var(--preto-border);display:flex;align-items:center;justify-content:space-between;">
+      <div>
+        <div style="font-family:&#39;Bebas Neue&#39;,sans-serif;font-size:20px;letter-spacing:3px;color:#25D366;">📋 LOG DE NOTIFICAÇÕES</div>
+        <div style="font-family:&#39;Oswald&#39;,sans-serif;font-size:10px;letter-spacing:2px;color:var(--creme-dim);text-transform:uppercase;margin-top:2px;">Histórico de mensagens WhatsApp</div>
+      </div>
+      <button onclick="fecharLogWA()" style="background:transparent;border:1px solid var(--preto-border);color:var(--creme-dim);width:32px;height:32px;cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center;" onmouseover="this.style.borderColor=&#39;var(--vermelho)&#39;;this.style.color=&#39;var(--vermelho)&#39;" onmouseout="this.style.borderColor=&#39;var(--preto-border)&#39;;this.style.color=&#39;var(--creme-dim)&#39;">✕</button>
+    </div>
+    <div id="wa-log-body" style="overflow-y:auto;padding:12px 24px;flex:1;"></div>
+    <div style="padding:14px 24px;border-top:1px solid var(--preto-border);display:flex;justify-content:flex-end;gap:10px;">
+      <button onclick="limparLogWA()" style="background:rgba(192,57,43,0.12);border:1px solid var(--vermelho);color:var(--vermelho);padding:8px 18px;cursor:pointer;font-family:&#39;Oswald&#39;,sans-serif;font-size:12px;letter-spacing:1px;text-transform:uppercase;transition:all 0.15s;" onmouseover="this.style.background=&#39;rgba(192,57,43,0.22)&#39;" onmouseout="this.style.background=&#39;rgba(192,57,43,0.12)&#39;">🗑 Limpar</button>
+      <button onclick="fecharLogWA()" style="background:transparent;border:1px solid var(--preto-border);color:var(--creme-dim);padding:8px 18px;cursor:pointer;font-family:&#39;Oswald&#39;,sans-serif;font-size:12px;letter-spacing:1px;text-transform:uppercase;transition:all 0.15s;" onmouseover="this.style.borderColor=&#39;var(--creme-dim)&#39;" onmouseout="this.style.borderColor=&#39;var(--preto-border)&#39;">Fechar</button>
+    </div>
+  </div>
+</div>
+
 <!-- ═══ STATUS CHANGE CONFIRMATION MODAL ═══ -->
 <div id="status-modal" style="display:none;position:fixed;inset:0;z-index:600;background:rgba(0,0,0,0.85);backdrop-filter:blur(4px);align-items:center;justify-content:center;">
   <div style="background:var(--preto-card);border:2px solid var(--amarelo-dim);padding:32px;max-width:400px;width:90%;animation:cardIn 0.25s ease both;position:relative;">
@@ -1431,5 +1602,6 @@ updateCartUI();
     </div>
   </div>
 </div>
+
 
 </body></html>
