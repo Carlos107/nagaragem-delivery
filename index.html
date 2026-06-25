@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<!-- saved from url=(0060)file:///C:/Users/junio/Downloads/Na_Garagem_Delivery_v2.html -->
+<!-- saved from url=(0047)https://carlos107.github.io/nagaragem-delivery/ -->
 <html lang="pt-BR"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Na Garagem Delivery — Faça seu Pedido</title>
-<link href="./Na Garagem Delivery — Faça seu Pedido 4_files/css2" rel="stylesheet">
-<link rel="stylesheet" href="style.css">
+<link href="./Na Garagem Delivery — Faça seu Pedido_files/css2" rel="stylesheet">
+<link rel="stylesheet" href="./Na Garagem Delivery — Faça seu Pedido_files/style.css">
 </head>
 <body>
 
@@ -550,6 +550,9 @@ const TAXA_ENTREGA = 3;
 const SUPABASE_URL = "https://ttpkmtwdzxezdufhsizu.supabase.co"; // ← sua Project URL
 const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InR0cGttdHdkenhlemR1ZmhzaXp1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkxMTI1MjMsImV4cCI6MjA5NDY4ODUyM30.GDANZ_9KOeqGuEWD1rhXjSbWrLBQmwCoglzHNK0mxtA"; // ← sua anon key
 
+// Retorna SEMPRE um objeto { ok, data, error, status }.
+// IMPORTANTE: nunca confunda "sucesso com corpo vazio" (ex: Prefer: return=minimal)
+// com "falha" — antes os dois casos retornavam `null` e o app não tinha como diferenciar.
 async function supabaseFetch(path, options = {}) {
   try {
     const res = await fetch(SUPABASE_URL + path, {
@@ -562,16 +565,23 @@ async function supabaseFetch(path, options = {}) {
       },
       body: options.body || undefined
     });
-    if (!res.ok) {
-      const err = await res.text();
-      console.error("Supabase erro:", res.status, err);
-      return null;
-    }
+
     const text = await res.text();
-    return text ? JSON.parse(text) : null;
+    let parsed = null;
+    if (text) {
+      try { parsed = JSON.parse(text); } catch (_) { parsed = text; }
+    }
+
+    if (!res.ok) {
+      console.error("Supabase erro:", res.status, text);
+      return { ok: false, data: null, error: parsed || text || ("HTTP " + res.status), status: res.status };
+    }
+
+    // res.ok === true aqui, mesmo se o corpo vier vazio (return=minimal)
+    return { ok: true, data: parsed, error: null, status: res.status };
   } catch (e) {
-    console.error("Supabase fetch falhou:", e);
-    return null;
+    console.error("Supabase fetch falhou (rede/CORS):", e);
+    return { ok: false, data: null, error: e.message || String(e), status: 0 };
   }
 }
 
@@ -970,7 +980,12 @@ async function confirmOrder() {
   const url = "https://wa.me/" + WHATSAPP_NUMBER + "?text=" + encodeURIComponent(msg);
   document.getElementById("whatsapp-link").href = url;
 
-  await saveOrderToPanel();
+  const saved = await saveOrderToPanel();
+  if (!saved) {
+    // Não avança para a tela "Confirmado" se o pedido realmente não foi salvo,
+    // para não dar falsa sensação de que o pedido chegou ao restaurante.
+    return;
+  }
 
   goTo(4);
 }
@@ -996,19 +1011,24 @@ async function saveOrderToPanel() {
 
   const result = await supabaseFetch("/rest/v1/pedidos", {
     method: "POST",
-    prefer: "return=minimal",
+    prefer: "return=representation", // pede o registro de volta, para confirmar e exibir created_at real
     body: JSON.stringify(pedido)
   });
 
-  if (result === null) {
-    showToast("Erro ao salvar pedido. Verifique a conexão.", "error");
-    return;
+  if (!result.ok) {
+    // Falha REAL (erro HTTP do Supabase: RLS, coluna inexistente, tipo de dado, etc.)
+    console.error("Falha ao salvar pedido no Supabase:", result.status, result.error);
+    showToast("Erro ao salvar pedido. Tente novamente ou avise o restaurante pelo WhatsApp.", "error");
+    return false;
   }
 
-  // Mantém em memória local para exibir no painel
+  // Sucesso confirmado pelo servidor (res.ok), mesmo que o corpo venha vazio
+  const saved = Array.isArray(result.data) ? result.data[0] : result.data;
+
+  // Mantém em memória local para exibir no painel imediatamente
   const orderLocal = {
-    id:        orderId,
-    createdAt: new Date().toISOString(),
+    id:        (saved && saved.id) || orderId,
+    createdAt: (saved && saved.created_at) || new Date().toISOString(),
     status:    "pendente",
     cliente:   { nome: d.nome, tel: d.tel },
     endereco:  d.enderecoStr,
@@ -1019,6 +1039,7 @@ async function saveOrderToPanel() {
   };
   orders.unshift(orderLocal);
   renderOrders();
+  return true;
 }
 
 function buildWhatsAppMessage() {
@@ -1095,11 +1116,17 @@ let pendingStatusChange = null; // { orderId, newStatus }
 
 // ── Supabase: carregar pedidos ────────
 async function loadOrdersStorage() {
-  const data = await supabaseFetch(
+  const result = await supabaseFetch(
     "/rest/v1/pedidos?order=created_at.desc&limit=100"
   );
-  if (!data) { orders = []; return; }
+  if (!result.ok) {
+    console.error("Não foi possível carregar pedidos:", result.error);
+    showToast("Não foi possível carregar os pedidos. Verifique a conexão.", "error");
+    orders = [];
+    return;
+  }
 
+  const data = result.data || [];
   orders = data.map(p => ({
     id:        p.id,
     createdAt: p.created_at,
@@ -1117,10 +1144,14 @@ async function loadOrdersStorage() {
 async function saveOrdersStorage() {
   if (!pendingStatusChange) return;
   const { orderId, newStatus } = pendingStatusChange;
-  await supabaseFetch(
+  const result = await supabaseFetch(
     `/rest/v1/pedidos?id=eq.${orderId}`,
     { method: "PATCH", body: JSON.stringify({ status: newStatus }) }
   );
+  if (!result.ok) {
+    console.error("Falha ao atualizar status:", result.error);
+    showToast("Erro ao atualizar status do pedido.", "error");
+  }
 }
 
 // ── Login ────────────────────────────
@@ -1155,6 +1186,8 @@ async function doOwnerLogin() {
 }
 
 // ── Panel ────────────────────────────
+let ordersPollInterval = null;
+
 async function openOwnerPanel() {
   document.getElementById("orders-panel").style.display = "block";
   document.body.style.overflow = "hidden";
@@ -1164,10 +1197,22 @@ async function openOwnerPanel() {
     </div>`;
   await loadOrdersStorage();
   renderOrders();
+
+  // Atualiza a lista automaticamente a cada 15s enquanto o painel estiver aberto,
+  // assim novos pedidos aparecem sem precisar recarregar a página.
+  if (ordersPollInterval) clearInterval(ordersPollInterval);
+  ordersPollInterval = setInterval(async () => {
+    await loadOrdersStorage();
+    renderOrders();
+  }, 15000);
 }
 function closeOwnerPanel() {
   document.getElementById("orders-panel").style.display = "none";
   document.body.style.overflow = "";
+  if (ordersPollInterval) {
+    clearInterval(ordersPollInterval);
+    ordersPollInterval = null;
+  }
 }
 
 // ── Filter ───────────────────────────
@@ -1602,6 +1647,7 @@ updateCartUI();
     </div>
   </div>
 </div>
+
 
 
 </body></html>
