@@ -5,9 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Na Garagem Delivery — Faça seu Pedido</title>
 <link href="./Na Garagem Delivery — Faça seu Pedido_files/css2" rel="stylesheet">
-<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="./Na Garagem Delivery — Faça seu Pedido_files/style.css">
 </head>
-<body>
+<body style="overflow: hidden;">
 
 <div class="header-tape"></div>
 <header>
@@ -19,9 +19,9 @@
   </div>
 
   <div style="display:flex;align-items:center;gap:10px;">
-    <button class="cart-header-btn" onclick="openCart()" id="cart-header-btn" style="display:none">
+    <button class="cart-header-btn" onclick="openCart()" id="cart-header-btn" style="">
       🛒 <span class="cart-label">Carrinho</span>
-      <span class="cart-badge pop" id="cart-badge">0</span>
+      <span class="cart-badge pop" id="cart-badge">1</span>
     </button>
     <button class="cart-header-btn" onclick="openOwnerLogin()" id="owner-btn" style="background: var(--preto-surface); color: var(--amarelo); border: 2px solid var(--amarelo-dim); clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%); padding: 10px 16px; font-family: Oswald, sans-serif; font-size: 12px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; cursor: pointer; transition: 0.2s;" onmouseover="this.style.background=&#39;var(--amarelo-glow)&#39;" onmouseout="this.style.background=&#39;var(--preto-surface)&#39;">
       🔐 Painel
@@ -502,11 +502,27 @@
     <div class="cart-title">🛒 Carrinho</div>
     <button class="cart-close" onclick="closeCart()">✕</button>
   </div>
-  <div class="cart-items" id="cart-items-list"><div class="cart-empty"><div class="cart-empty-icon">🛒</div><div>Seu carrinho está vazio</div><div style="margin-top:6px;font-size:12px;">Adicione itens do cardápio</div></div></div>
+  <div class="cart-items" id="cart-items-list"><div class="cart-item">
+      <div class="cart-item-row">
+        <div>
+          <div class="cart-item-name">🥓 Franbacon</div>
+          <div class="cart-item-type">Simples</div>
+        </div>
+        <div class="cart-item-price">R$ 14,00</div>
+      </div>
+      <div class="cart-item-row">
+        <div class="cart-item-qty">
+          <button class="cqty-btn" onclick="changeCartQty(&#39;2Simples&#39;,-1)">−</button>
+          <div class="cqty-num">1</div>
+          <button class="cqty-btn" onclick="changeCartQty(&#39;2Simples&#39;,1)">+</button>
+          <button class="cart-del" onclick="removeCartItem(&#39;2Simples&#39;)" title="Remover">🗑</button>
+        </div>
+        <div style="font-family:&#39;Oswald&#39;,sans-serif;font-size:11px;color:var(--creme-dim);">R$ 14,00 × 1</div>
+      </div></div></div>
   <div class="cart-footer">
     <div class="cart-total-row" id="cart-subtotal-row" style="margin-bottom:4px;">
       <div class="cart-total-label" style="font-size:11px;">Subtotal</div>
-      <div style="font-family:&#39;Bebas Neue&#39;,sans-serif;font-size:18px;color:var(--creme-dim);letter-spacing:1px;" id="cart-subtotal-val">R$ 0,00</div>
+      <div style="font-family:&#39;Bebas Neue&#39;,sans-serif;font-size:18px;color:var(--creme-dim);letter-spacing:1px;" id="cart-subtotal-val">R$ 14,00</div>
     </div>
     <div class="cart-total-row" style="margin-bottom:4px;">
       <div class="cart-total-label" style="font-size:11px;">🛵 Taxa de entrega</div>
@@ -517,25 +533,25 @@
       <div>
         <div class="cart-total-label">Total</div>
       </div>
-      <div class="cart-total-val" id="cart-total-val">R$ 3,00</div>
+      <div class="cart-total-val" id="cart-total-val">R$ 17,00</div>
     </div>
-    <button class="proceed-btn" id="proceed-btn" onclick="goToCheckout()" disabled="">
+    <button class="proceed-btn" id="proceed-btn" onclick="goToCheckout()">
       Fechar Pedido →
     </button>
   </div>
 </div>
 
 <!-- Barra mobile -->
-<div class="mobile-cart-bar" id="mobile-cart-bar">
+<div class="mobile-cart-bar visible" id="mobile-cart-bar">
   <div class="mobile-cart-info">
-    <div id="mobile-qty-txt">0 itens</div>
-    <strong id="mobile-total-txt">R$ 3,00</strong>
+    <div id="mobile-qty-txt">1 item</div>
+    <strong id="mobile-total-txt">R$ 17,00</strong>
   </div>
   <button class="mobile-cart-btn" onclick="goToCheckout()">Ver Carrinho →</button>
 </div>
 
 <!-- Toast -->
-<div id="toast"></div>
+<div id="toast" class="">✅ Status atualizado! WhatsApp aberto.</div>
 
 <script>
 /* ════════════════════════════════════
@@ -1549,9 +1565,9 @@ async function confirmStatusChange() {
   if (!order) { closeStatusModal(); return; }
 
   order.status = newStatus;
-  closeStatusModal();
 
   await saveOrdersStorage();
+  closeStatusModal();
   renderOrders();
 
   // Dispara notificação WhatsApp automaticamente
@@ -1567,7 +1583,7 @@ updateCartUI();
 </script>
 
 <!-- ═══ OWNER LOGIN MODAL ═══ -->
-<div id="owner-login-overlay" style="display:none;position:fixed;inset:0;z-index:500;background:rgba(0,0,0,0.85);backdrop-filter:blur(4px);align-items:center;justify-content:center;" onclick="closeOwnerLoginOnBg(event)">
+<div id="owner-login-overlay" style="display: none; position: fixed; inset: 0px; z-index: 500; background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(4px); align-items: center; justify-content: center;" onclick="closeOwnerLoginOnBg(event)">
   <div style="background:var(--preto-card);border:2px solid var(--amarelo);padding:40px 36px;max-width:380px;width:90%;position:relative;animation:cardIn 0.3s ease both;">
     <div style="position:absolute;top:0;left:0;border-style:solid;border-width:22px 22px 0 0;border-color:var(--amarelo) transparent transparent transparent;"></div>
     <div style="text-align:center;margin-bottom:28px;">
@@ -1577,7 +1593,7 @@ updateCartUI();
     </div>
     <div style="margin-bottom:20px;">
       <label style="font-family:&#39;Oswald&#39;,sans-serif;font-size:12px;letter-spacing:1.5px;text-transform:uppercase;color:var(--creme-dim);display:block;margin-bottom:8px;">Senha</label>
-      <input type="password" id="owner-pass-input" placeholder="••••••••" style="width:100%;background:var(--preto-surface);border:2px solid var(--preto-border);color:var(--creme);font-family:&#39;Oswald&#39;,sans-serif;font-size:16px;padding:12px 14px;outline:none;transition:border-color 0.2s;letter-spacing:4px;" onkeydown="if(event.key===&#39;Enter&#39;)doOwnerLogin()" onfocus="this.style.borderColor=&#39;var(--amarelo-dim)&#39;" onblur="this.style.borderColor=&#39;var(--preto-border)&#39;">
+      <input type="password" id="owner-pass-input" placeholder="••••••••" style="width: 100%; background: var(--preto-surface); border-color: var(--preto-border); border-top-style: ; border-top-width: ; border-right-style: ; border-right-width: ; border-bottom-style: ; border-bottom-width: ; border-left-style: ; border-left-width: ; border-image-source: ; border-image-slice: ; border-image-width: ; border-image-outset: ; border-image-repeat: ; color: var(--creme); font-family: Oswald, sans-serif; font-size: 16px; padding: 12px 14px; outline: none; transition: border-color 0.2s; letter-spacing: 4px;" onkeydown="if(event.key===&#39;Enter&#39;)doOwnerLogin()" onfocus="this.style.borderColor=&#39;var(--amarelo-dim)&#39;" onblur="this.style.borderColor=&#39;var(--preto-border)&#39;">
     </div>
     <div id="owner-login-err" style="display:none;background:rgba(192,57,43,0.15);border:1px solid var(--vermelho);color:#f87171;font-family:&#39;Oswald&#39;,sans-serif;font-size:12px;letter-spacing:1px;padding:10px 14px;margin-bottom:16px;text-align:center;">Senha incorreta. Tente novamente.</div>
     <button onclick="doOwnerLogin()" style="width:100%;background:var(--amarelo);color:var(--preto);border:none;padding:14px;font-family:&#39;Bebas Neue&#39;,sans-serif;font-size:18px;letter-spacing:3px;cursor:pointer;clip-path:polygon(8px 0%,100% 0%,calc(100% - 8px) 100%,0% 100%);transition:background 0.2s;" onmouseover="this.style.background=&#39;var(--amarelo-hover)&#39;" onmouseout="this.style.background=&#39;var(--amarelo)&#39;">ENTRAR</button>
@@ -1586,14 +1602,14 @@ updateCartUI();
 </div>
 
 <!-- ═══ ORDERS PANEL (full overlay) ═══ -->
-<div id="orders-panel" style="display:none;position:fixed;inset:0;z-index:400;background:var(--preto);overflow-y:auto;">
+<div id="orders-panel" style="display: block; position: fixed; inset: 0px; z-index: 400; background: var(--preto); overflow-y: auto;">
   <div style="background:var(--preto);border-bottom:3px solid var(--amarelo);box-shadow:0 4px 28px rgba(245,197,24,0.15);display:flex;align-items:center;justify-content:space-between;padding:12px 20px;position:sticky;top:0;z-index:10;">
     <div>
       <div style="font-family:&#39;Bebas Neue&#39;,sans-serif;font-size:22px;letter-spacing:4px;color:var(--amarelo);">🍖 NA GARAGEM — PEDIDOS</div>
       <div style="font-family:&#39;Oswald&#39;,sans-serif;font-size:10px;letter-spacing:2px;color:var(--creme-dim);text-transform:uppercase;">Painel do Proprietário</div>
     </div>
     <div style="display:flex;gap:10px;align-items:center;">
-      <div id="orders-counter" style="font-family:&#39;Bebas Neue&#39;,sans-serif;font-size:16px;letter-spacing:2px;color:var(--amarelo);background:var(--preto-surface);border:1px solid var(--amarelo-dim);padding:6px 14px;"></div>
+      <div id="orders-counter" style="font-family:&#39;Bebas Neue&#39;,sans-serif;font-size:16px;letter-spacing:2px;color:var(--amarelo);background:var(--preto-surface);border:1px solid var(--amarelo-dim);padding:6px 14px;">7 pedidos</div>
       <button onclick="abrirLogWA()" style="background:rgba(37,211,102,0.10);border:1px solid #25D366;color:#25D366;padding:6px 14px;cursor:pointer;font-family:&#39;Oswald&#39;,sans-serif;font-size:11px;letter-spacing:1px;text-transform:uppercase;transition:all 0.15s;white-space:nowrap;" onmouseover="this.style.background=&#39;rgba(37,211,102,0.22)&#39;" onmouseout="this.style.background=&#39;rgba(37,211,102,0.10)&#39;">📋 Log WA</button>
       <button onclick="closeOwnerPanel()" style="background:var(--preto-surface);border:1px solid var(--preto-border);color:var(--creme-dim);width:38px;height:38px;cursor:pointer;font-size:18px;display:flex;align-items:center;justify-content:center;transition:all 0.15s;" onmouseover="this.style.borderColor=&#39;var(--vermelho)&#39;;this.style.color=&#39;var(--vermelho)&#39;" onmouseout="this.style.borderColor=&#39;var(--preto-border)&#39;;this.style.color=&#39;var(--creme-dim)&#39;">✕</button>
     </div>
@@ -1602,14 +1618,386 @@ updateCartUI();
   <!-- Filter bar -->
   <div style="max-width:1200px;margin:20px auto 0;padding:0 16px;">
     <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:24px;">
-      <button class="orders-filter-btn active" data-filter="todos" onclick="filterOrders(this,&#39;todos&#39;)">Todos</button>
-      <button class="orders-filter-btn" data-filter="pendente" onclick="filterOrders(this,&#39;pendente&#39;)">⏳ Pendentes</button>
+      <button class="orders-filter-btn" data-filter="todos" onclick="filterOrders(this,&#39;todos&#39;)">Todos</button>
+      <button class="orders-filter-btn active" data-filter="pendente" onclick="filterOrders(this,&#39;pendente&#39;)">⏳ Pendentes</button>
       <button class="orders-filter-btn" data-filter="em_andamento" onclick="filterOrders(this,&#39;em_andamento&#39;)">🔥 Em Andamento</button>
       <button class="orders-filter-btn" data-filter="finalizado" onclick="filterOrders(this,&#39;finalizado&#39;)">✅ Finalizados</button>
       <button class="orders-filter-btn" data-filter="cancelado" onclick="filterOrders(this,&#39;cancelado&#39;)">❌ Cancelados</button>
     </div>
-    <div id="orders-list" style="display:flex;flex-direction:column;gap:16px;padding-bottom:80px;"></div>
-    <div id="orders-empty" style="display:none;text-align:center;padding:80px 0;color:var(--creme-dim);">
+    <div id="orders-list" style="display:flex;flex-direction:column;gap:16px;padding-bottom:80px;"><div class="order-card status-pendente" id="order-card-NG-694371">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:10px;margin-bottom:14px;">
+        <div>
+          <div style="font-family:&#39;Bebas Neue&#39;,sans-serif;font-size:20px;letter-spacing:3px;color:var(--amarelo);">NG-694371</div>
+          <div style="font-family:&#39;Oswald&#39;,sans-serif;font-size:11px;color:var(--creme-dim);letter-spacing:1px;margin-top:2px;">⏰ 15/07/26, 10:31</div>
+        </div>
+        <span class="order-status-badge badge-pendente">⏳ Pendente</span>
+      </div>
+
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin-bottom:14px;">
+        <div style="background:var(--preto-surface);border:1px solid var(--preto-border);padding:12px;">
+          <div style="font-family:&#39;Oswald&#39;,sans-serif;font-size:10px;letter-spacing:2px;color:var(--creme-dim);text-transform:uppercase;margin-bottom:6px;">👤 Cliente</div>
+          <div style="font-family:&#39;Oswald&#39;,sans-serif;font-size:14px;font-weight:700;color:var(--creme);">Carlos Henrique</div>
+          <div style="font-family:&#39;Oswald&#39;,sans-serif;font-size:12px;color:var(--creme-dim);">📱 +5537998458108</div>
+        </div>
+        <div style="background:var(--preto-surface);border:1px solid var(--preto-border);padding:12px;">
+          <div style="font-family:&#39;Oswald&#39;,sans-serif;font-size:10px;letter-spacing:2px;color:var(--creme-dim);text-transform:uppercase;margin-bottom:6px;">📍 Endereço</div>
+          <div style="font-family:&#39;Oswald&#39;,sans-serif;font-size:12px;color:var(--creme);line-height:1.4;">ygg, 7, gffgh, Rio Paranaiba</div>
+        </div>
+        <div style="background:var(--preto-surface);border:1px solid var(--preto-border);padding:12px;">
+          <div style="font-family:&#39;Oswald&#39;,sans-serif;font-size:10px;letter-spacing:2px;color:var(--creme-dim);text-transform:uppercase;margin-bottom:6px;">💰 Pagamento</div>
+          <div style="font-family:&#39;Oswald&#39;,sans-serif;font-size:12px;color:var(--creme);">💵 Dinheiro</div>
+        </div>
+      </div>
+
+      <div style="background:var(--preto-surface);border:1px solid var(--preto-border);padding:12px;margin-bottom:14px;">
+        <div style="font-family:&#39;Oswald&#39;,sans-serif;font-size:10px;letter-spacing:2px;color:var(--creme-dim);text-transform:uppercase;margin-bottom:8px;">🛒 Itens</div>
+        <div style="display:flex;justify-content:space-between;font-family:&#39;Oswald&#39;,sans-serif;font-size:12px;color:var(--creme-dim);padding:3px 0;border-bottom:1px solid var(--preto-border);">
+        <span>🥓 Franbacon (Simples) × 1</span>
+        <span style="color:var(--amarelo);">R$ 14,00</span>
+      </div>
+        <div style="display:flex;justify-content:flex-end;margin-top:10px;">
+          <div style="font-family:&#39;Bebas Neue&#39;,sans-serif;font-size:20px;letter-spacing:2px;color:var(--amarelo);">TOTAL: R$ 17,00</div>
+        </div>
+      </div>
+
+      
+
+      <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;justify-content:space-between;">
+        <div style="display:flex;gap:8px;flex-wrap:wrap;"><button class="status-select-btn btn-em_andamento" onclick="requestStatusChange(&#39;NG-694371&#39;,&#39;em_andamento&#39;)">🔥 Iniciar</button><button class="status-select-btn btn-cancelado" onclick="requestStatusChange(&#39;NG-694371&#39;,&#39;cancelado&#39;)">❌ Cancelar</button></div>
+        <div style="display:flex;gap:6px;flex-wrap:wrap;">
+          
+          
+          <button onclick="waNotificar(&#39;NG-694371&#39;,&#39;pendente&#39;)" style="background:rgba(37,211,102,0.12);border:1px solid #25D366;color:#25D366;padding:7px 14px;cursor:pointer;font-family:&#39;Oswald&#39;,sans-serif;font-size:12px;letter-spacing:1px;text-transform:uppercase;transition:all 0.15s;white-space:nowrap;" onmouseover="this.style.background=&#39;rgba(37,211,102,0.22)&#39;" onmouseout="this.style.background=&#39;rgba(37,211,102,0.12)&#39;">
+            📲 Notificar
+          </button>
+        </div>
+      </div>
+    </div><div class="order-card status-pendente" id="order-card-NG-853157">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:10px;margin-bottom:14px;">
+        <div>
+          <div style="font-family:&#39;Bebas Neue&#39;,sans-serif;font-size:20px;letter-spacing:3px;color:var(--amarelo);">NG-853157</div>
+          <div style="font-family:&#39;Oswald&#39;,sans-serif;font-size:11px;color:var(--creme-dim);letter-spacing:1px;margin-top:2px;">⏰ 25/06/26, 15:24</div>
+        </div>
+        <span class="order-status-badge badge-pendente">⏳ Pendente</span>
+      </div>
+
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin-bottom:14px;">
+        <div style="background:var(--preto-surface);border:1px solid var(--preto-border);padding:12px;">
+          <div style="font-family:&#39;Oswald&#39;,sans-serif;font-size:10px;letter-spacing:2px;color:var(--creme-dim);text-transform:uppercase;margin-bottom:6px;">👤 Cliente</div>
+          <div style="font-family:&#39;Oswald&#39;,sans-serif;font-size:14px;font-weight:700;color:var(--creme);">Erica Abadia Silva Martins</div>
+          <div style="font-family:&#39;Oswald&#39;,sans-serif;font-size:12px;color:var(--creme-dim);">📱 34999466746</div>
+        </div>
+        <div style="background:var(--preto-surface);border:1px solid var(--preto-border);padding:12px;">
+          <div style="font-family:&#39;Oswald&#39;,sans-serif;font-size:10px;letter-spacing:2px;color:var(--creme-dim);text-transform:uppercase;margin-bottom:6px;">📍 Endereço</div>
+          <div style="font-family:&#39;Oswald&#39;,sans-serif;font-size:12px;color:var(--creme);line-height:1.4;">Av dos cafeicultores, 3 - Loja, Samambaia, Rio Paranaiba</div>
+        </div>
+        <div style="background:var(--preto-surface);border:1px solid var(--preto-border);padding:12px;">
+          <div style="font-family:&#39;Oswald&#39;,sans-serif;font-size:10px;letter-spacing:2px;color:var(--creme-dim);text-transform:uppercase;margin-bottom:6px;">💰 Pagamento</div>
+          <div style="font-family:&#39;Oswald&#39;,sans-serif;font-size:12px;color:var(--creme);">💵 Dinheiro — Troco para 100</div>
+        </div>
+      </div>
+
+      <div style="background:var(--preto-surface);border:1px solid var(--preto-border);padding:12px;margin-bottom:14px;">
+        <div style="font-family:&#39;Oswald&#39;,sans-serif;font-size:10px;letter-spacing:2px;color:var(--creme-dim);text-transform:uppercase;margin-bottom:8px;">🛒 Itens</div>
+        <div style="display:flex;justify-content:space-between;font-family:&#39;Oswald&#39;,sans-serif;font-size:12px;color:var(--creme-dim);padding:3px 0;border-bottom:1px solid var(--preto-border);">
+        <span>🥩 Boi (Completo) × 1</span>
+        <span style="color:var(--amarelo);">R$ 16,00</span>
+      </div><div style="display:flex;justify-content:space-between;font-family:&#39;Oswald&#39;,sans-serif;font-size:12px;color:var(--creme-dim);padding:3px 0;border-bottom:1px solid var(--preto-border);">
+        <span>🥓 Franbacon (Simples) × 1</span>
+        <span style="color:var(--amarelo);">R$ 14,00</span>
+      </div><div style="display:flex;justify-content:space-between;font-family:&#39;Oswald&#39;,sans-serif;font-size:12px;color:var(--creme-dim);padding:3px 0;border-bottom:1px solid var(--preto-border);">
+        <span>🥓 Franbacon (Completo) × 1</span>
+        <span style="color:var(--amarelo);">R$ 16,00</span>
+      </div><div style="display:flex;justify-content:space-between;font-family:&#39;Oswald&#39;,sans-serif;font-size:12px;color:var(--creme-dim);padding:3px 0;border-bottom:1px solid var(--preto-border);">
+        <span>🍗 Tulipa (Simples) × 1</span>
+        <span style="color:var(--amarelo);">R$ 14,00</span>
+      </div><div style="display:flex;justify-content:space-between;font-family:&#39;Oswald&#39;,sans-serif;font-size:12px;color:var(--creme-dim);padding:3px 0;border-bottom:1px solid var(--preto-border);">
+        <span>🥤 Refrigerante 1Lt × 1</span>
+        <span style="color:var(--amarelo);">R$ 10,00</span>
+      </div>
+        <div style="display:flex;justify-content:flex-end;margin-top:10px;">
+          <div style="font-family:&#39;Bebas Neue&#39;,sans-serif;font-size:20px;letter-spacing:2px;color:var(--amarelo);">TOTAL: R$ 73,00</div>
+        </div>
+      </div>
+
+      <div style="background:rgba(245,197,24,0.05);border:1px solid var(--amarelo-dim);padding:10px 12px;margin-bottom:14px;font-family:&#39;Oswald&#39;,sans-serif;font-size:12px;color:var(--creme-dim);letter-spacing:0.5px;">📝 <em>Teste</em></div>
+
+      <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;justify-content:space-between;">
+        <div style="display:flex;gap:8px;flex-wrap:wrap;"><button class="status-select-btn btn-em_andamento" onclick="requestStatusChange(&#39;NG-853157&#39;,&#39;em_andamento&#39;)">🔥 Iniciar</button><button class="status-select-btn btn-cancelado" onclick="requestStatusChange(&#39;NG-853157&#39;,&#39;cancelado&#39;)">❌ Cancelar</button></div>
+        <div style="display:flex;gap:6px;flex-wrap:wrap;">
+          
+          
+          <button onclick="waNotificar(&#39;NG-853157&#39;,&#39;pendente&#39;)" style="background:rgba(37,211,102,0.12);border:1px solid #25D366;color:#25D366;padding:7px 14px;cursor:pointer;font-family:&#39;Oswald&#39;,sans-serif;font-size:12px;letter-spacing:1px;text-transform:uppercase;transition:all 0.15s;white-space:nowrap;" onmouseover="this.style.background=&#39;rgba(37,211,102,0.22)&#39;" onmouseout="this.style.background=&#39;rgba(37,211,102,0.12)&#39;">
+            📲 Notificar
+          </button>
+        </div>
+      </div>
+    </div><div class="order-card status-pendente" id="order-card-NG-634638">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:10px;margin-bottom:14px;">
+        <div>
+          <div style="font-family:&#39;Bebas Neue&#39;,sans-serif;font-size:20px;letter-spacing:3px;color:var(--amarelo);">NG-634638</div>
+          <div style="font-family:&#39;Oswald&#39;,sans-serif;font-size:11px;color:var(--creme-dim);letter-spacing:1px;margin-top:2px;">⏰ 25/06/26, 15:20</div>
+        </div>
+        <span class="order-status-badge badge-pendente">⏳ Pendente</span>
+      </div>
+
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin-bottom:14px;">
+        <div style="background:var(--preto-surface);border:1px solid var(--preto-border);padding:12px;">
+          <div style="font-family:&#39;Oswald&#39;,sans-serif;font-size:10px;letter-spacing:2px;color:var(--creme-dim);text-transform:uppercase;margin-bottom:6px;">👤 Cliente</div>
+          <div style="font-family:&#39;Oswald&#39;,sans-serif;font-size:14px;font-weight:700;color:var(--creme);">Erica Abadia Silva Martins</div>
+          <div style="font-family:&#39;Oswald&#39;,sans-serif;font-size:12px;color:var(--creme-dim);">📱 34999466746</div>
+        </div>
+        <div style="background:var(--preto-surface);border:1px solid var(--preto-border);padding:12px;">
+          <div style="font-family:&#39;Oswald&#39;,sans-serif;font-size:10px;letter-spacing:2px;color:var(--creme-dim);text-transform:uppercase;margin-bottom:6px;">📍 Endereço</div>
+          <div style="font-family:&#39;Oswald&#39;,sans-serif;font-size:12px;color:var(--creme);line-height:1.4;">Av dos cafeicultores, 3 - Loja, Samambaia, Rio Paranaiba</div>
+        </div>
+        <div style="background:var(--preto-surface);border:1px solid var(--preto-border);padding:12px;">
+          <div style="font-family:&#39;Oswald&#39;,sans-serif;font-size:10px;letter-spacing:2px;color:var(--creme-dim);text-transform:uppercase;margin-bottom:6px;">💰 Pagamento</div>
+          <div style="font-family:&#39;Oswald&#39;,sans-serif;font-size:12px;color:var(--creme);">💳 Cartão (credito)</div>
+        </div>
+      </div>
+
+      <div style="background:var(--preto-surface);border:1px solid var(--preto-border);padding:12px;margin-bottom:14px;">
+        <div style="font-family:&#39;Oswald&#39;,sans-serif;font-size:10px;letter-spacing:2px;color:var(--creme-dim);text-transform:uppercase;margin-bottom:8px;">🛒 Itens</div>
+        <div style="display:flex;justify-content:space-between;font-family:&#39;Oswald&#39;,sans-serif;font-size:12px;color:var(--creme-dim);padding:3px 0;border-bottom:1px solid var(--preto-border);">
+        <span>🥩 Boi (Simples) × 1</span>
+        <span style="color:var(--amarelo);">R$ 14,00</span>
+      </div><div style="display:flex;justify-content:space-between;font-family:&#39;Oswald&#39;,sans-serif;font-size:12px;color:var(--creme-dim);padding:3px 0;border-bottom:1px solid var(--preto-border);">
+        <span>🥓 Franbacon (Completo) × 1</span>
+        <span style="color:var(--amarelo);">R$ 16,00</span>
+      </div><div style="display:flex;justify-content:space-between;font-family:&#39;Oswald&#39;,sans-serif;font-size:12px;color:var(--creme-dim);padding:3px 0;border-bottom:1px solid var(--preto-border);">
+        <span>🐷 Suíno (Completo) × 1</span>
+        <span style="color:var(--amarelo);">R$ 16,00</span>
+      </div><div style="display:flex;justify-content:space-between;font-family:&#39;Oswald&#39;,sans-serif;font-size:12px;color:var(--creme-dim);padding:3px 0;border-bottom:1px solid var(--preto-border);">
+        <span>🍗 Tulipa (Simples) × 2</span>
+        <span style="color:var(--amarelo);">R$ 28,00</span>
+      </div><div style="display:flex;justify-content:space-between;font-family:&#39;Oswald&#39;,sans-serif;font-size:12px;color:var(--creme-dim);padding:3px 0;border-bottom:1px solid var(--preto-border);">
+        <span>🥖 Pão de Alho (Simples) × 1</span>
+        <span style="color:var(--amarelo);">R$ 14,00</span>
+      </div><div style="display:flex;justify-content:space-between;font-family:&#39;Oswald&#39;,sans-serif;font-size:12px;color:var(--creme-dim);padding:3px 0;border-bottom:1px solid var(--preto-border);">
+        <span>🥤 Refrigerante Lata × 1</span>
+        <span style="color:var(--amarelo);">R$ 5,00</span>
+      </div>
+        <div style="display:flex;justify-content:flex-end;margin-top:10px;">
+          <div style="font-family:&#39;Bebas Neue&#39;,sans-serif;font-size:20px;letter-spacing:2px;color:var(--amarelo);">TOTAL: R$ 96,00</div>
+        </div>
+      </div>
+
+      
+
+      <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;justify-content:space-between;">
+        <div style="display:flex;gap:8px;flex-wrap:wrap;"><button class="status-select-btn btn-em_andamento" onclick="requestStatusChange(&#39;NG-634638&#39;,&#39;em_andamento&#39;)">🔥 Iniciar</button><button class="status-select-btn btn-cancelado" onclick="requestStatusChange(&#39;NG-634638&#39;,&#39;cancelado&#39;)">❌ Cancelar</button></div>
+        <div style="display:flex;gap:6px;flex-wrap:wrap;">
+          
+          
+          <button onclick="waNotificar(&#39;NG-634638&#39;,&#39;pendente&#39;)" style="background:rgba(37,211,102,0.12);border:1px solid #25D366;color:#25D366;padding:7px 14px;cursor:pointer;font-family:&#39;Oswald&#39;,sans-serif;font-size:12px;letter-spacing:1px;text-transform:uppercase;transition:all 0.15s;white-space:nowrap;" onmouseover="this.style.background=&#39;rgba(37,211,102,0.22)&#39;" onmouseout="this.style.background=&#39;rgba(37,211,102,0.12)&#39;">
+            📲 Notificar
+          </button>
+        </div>
+      </div>
+    </div><div class="order-card status-pendente" id="order-card-NG-527395">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:10px;margin-bottom:14px;">
+        <div>
+          <div style="font-family:&#39;Bebas Neue&#39;,sans-serif;font-size:20px;letter-spacing:3px;color:var(--amarelo);">NG-527395</div>
+          <div style="font-family:&#39;Oswald&#39;,sans-serif;font-size:11px;color:var(--creme-dim);letter-spacing:1px;margin-top:2px;">⏰ 25/06/26, 14:54</div>
+        </div>
+        <span class="order-status-badge badge-pendente">⏳ Pendente</span>
+      </div>
+
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin-bottom:14px;">
+        <div style="background:var(--preto-surface);border:1px solid var(--preto-border);padding:12px;">
+          <div style="font-family:&#39;Oswald&#39;,sans-serif;font-size:10px;letter-spacing:2px;color:var(--creme-dim);text-transform:uppercase;margin-bottom:6px;">👤 Cliente</div>
+          <div style="font-family:&#39;Oswald&#39;,sans-serif;font-size:14px;font-weight:700;color:var(--creme);">tres</div>
+          <div style="font-family:&#39;Oswald&#39;,sans-serif;font-size:12px;color:var(--creme-dim);">📱 +5537998321222</div>
+        </div>
+        <div style="background:var(--preto-surface);border:1px solid var(--preto-border);padding:12px;">
+          <div style="font-family:&#39;Oswald&#39;,sans-serif;font-size:10px;letter-spacing:2px;color:var(--creme-dim);text-transform:uppercase;margin-bottom:6px;">📍 Endereço</div>
+          <div style="font-family:&#39;Oswald&#39;,sans-serif;font-size:12px;color:var(--creme);line-height:1.4;">ygg, 7, gffgh, Rio Paranaiba</div>
+        </div>
+        <div style="background:var(--preto-surface);border:1px solid var(--preto-border);padding:12px;">
+          <div style="font-family:&#39;Oswald&#39;,sans-serif;font-size:10px;letter-spacing:2px;color:var(--creme-dim);text-transform:uppercase;margin-bottom:6px;">💰 Pagamento</div>
+          <div style="font-family:&#39;Oswald&#39;,sans-serif;font-size:12px;color:var(--creme);">💵 Dinheiro</div>
+        </div>
+      </div>
+
+      <div style="background:var(--preto-surface);border:1px solid var(--preto-border);padding:12px;margin-bottom:14px;">
+        <div style="font-family:&#39;Oswald&#39;,sans-serif;font-size:10px;letter-spacing:2px;color:var(--creme-dim);text-transform:uppercase;margin-bottom:8px;">🛒 Itens</div>
+        <div style="display:flex;justify-content:space-between;font-family:&#39;Oswald&#39;,sans-serif;font-size:12px;color:var(--creme-dim);padding:3px 0;border-bottom:1px solid var(--preto-border);">
+        <span>🐷 Suíno (Simples) × 1</span>
+        <span style="color:var(--amarelo);">R$ 14,00</span>
+      </div>
+        <div style="display:flex;justify-content:flex-end;margin-top:10px;">
+          <div style="font-family:&#39;Bebas Neue&#39;,sans-serif;font-size:20px;letter-spacing:2px;color:var(--amarelo);">TOTAL: R$ 17,00</div>
+        </div>
+      </div>
+
+      
+
+      <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;justify-content:space-between;">
+        <div style="display:flex;gap:8px;flex-wrap:wrap;"><button class="status-select-btn btn-em_andamento" onclick="requestStatusChange(&#39;NG-527395&#39;,&#39;em_andamento&#39;)">🔥 Iniciar</button><button class="status-select-btn btn-cancelado" onclick="requestStatusChange(&#39;NG-527395&#39;,&#39;cancelado&#39;)">❌ Cancelar</button></div>
+        <div style="display:flex;gap:6px;flex-wrap:wrap;">
+          
+          
+          <button onclick="waNotificar(&#39;NG-527395&#39;,&#39;pendente&#39;)" style="background:rgba(37,211,102,0.12);border:1px solid #25D366;color:#25D366;padding:7px 14px;cursor:pointer;font-family:&#39;Oswald&#39;,sans-serif;font-size:12px;letter-spacing:1px;text-transform:uppercase;transition:all 0.15s;white-space:nowrap;" onmouseover="this.style.background=&#39;rgba(37,211,102,0.22)&#39;" onmouseout="this.style.background=&#39;rgba(37,211,102,0.12)&#39;">
+            📲 Notificar
+          </button>
+        </div>
+      </div>
+    </div><div class="order-card status-pendente" id="order-card-NG-418206">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:10px;margin-bottom:14px;">
+        <div>
+          <div style="font-family:&#39;Bebas Neue&#39;,sans-serif;font-size:20px;letter-spacing:3px;color:var(--amarelo);">NG-418206</div>
+          <div style="font-family:&#39;Oswald&#39;,sans-serif;font-size:11px;color:var(--creme-dim);letter-spacing:1px;margin-top:2px;">⏰ 18/05/26, 19:13</div>
+        </div>
+        <span class="order-status-badge badge-pendente">⏳ Pendente</span>
+      </div>
+
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin-bottom:14px;">
+        <div style="background:var(--preto-surface);border:1px solid var(--preto-border);padding:12px;">
+          <div style="font-family:&#39;Oswald&#39;,sans-serif;font-size:10px;letter-spacing:2px;color:var(--creme-dim);text-transform:uppercase;margin-bottom:6px;">👤 Cliente</div>
+          <div style="font-family:&#39;Oswald&#39;,sans-serif;font-size:14px;font-weight:700;color:var(--creme);">Carlos Henrique de Assis Martins</div>
+          <div style="font-family:&#39;Oswald&#39;,sans-serif;font-size:12px;color:var(--creme-dim);">📱 37998458108</div>
+        </div>
+        <div style="background:var(--preto-surface);border:1px solid var(--preto-border);padding:12px;">
+          <div style="font-family:&#39;Oswald&#39;,sans-serif;font-size:10px;letter-spacing:2px;color:var(--creme-dim);text-transform:uppercase;margin-bottom:6px;">📍 Endereço</div>
+          <div style="font-family:&#39;Oswald&#39;,sans-serif;font-size:12px;color:var(--creme);line-height:1.4;">Teste 2, 34, Testey, São Gotardo</div>
+        </div>
+        <div style="background:var(--preto-surface);border:1px solid var(--preto-border);padding:12px;">
+          <div style="font-family:&#39;Oswald&#39;,sans-serif;font-size:10px;letter-spacing:2px;color:var(--creme-dim);text-transform:uppercase;margin-bottom:6px;">💰 Pagamento</div>
+          <div style="font-family:&#39;Oswald&#39;,sans-serif;font-size:12px;color:var(--creme);">💳 Cartão (credito)</div>
+        </div>
+      </div>
+
+      <div style="background:var(--preto-surface);border:1px solid var(--preto-border);padding:12px;margin-bottom:14px;">
+        <div style="font-family:&#39;Oswald&#39;,sans-serif;font-size:10px;letter-spacing:2px;color:var(--creme-dim);text-transform:uppercase;margin-bottom:8px;">🛒 Itens</div>
+        <div style="display:flex;justify-content:space-between;font-family:&#39;Oswald&#39;,sans-serif;font-size:12px;color:var(--creme-dim);padding:3px 0;border-bottom:1px solid var(--preto-border);">
+        <span>🥓 Franbacon (Simples) × 2</span>
+        <span style="color:var(--amarelo);">R$ 28,00</span>
+      </div><div style="display:flex;justify-content:space-between;font-family:&#39;Oswald&#39;,sans-serif;font-size:12px;color:var(--creme-dim);padding:3px 0;border-bottom:1px solid var(--preto-border);">
+        <span>🐷 Suíno (Simples) × 1</span>
+        <span style="color:var(--amarelo);">R$ 14,00</span>
+      </div>
+        <div style="display:flex;justify-content:flex-end;margin-top:10px;">
+          <div style="font-family:&#39;Bebas Neue&#39;,sans-serif;font-size:20px;letter-spacing:2px;color:var(--amarelo);">TOTAL: R$ 45,00</div>
+        </div>
+      </div>
+
+      
+
+      <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;justify-content:space-between;">
+        <div style="display:flex;gap:8px;flex-wrap:wrap;"><button class="status-select-btn btn-em_andamento" onclick="requestStatusChange(&#39;NG-418206&#39;,&#39;em_andamento&#39;)">🔥 Iniciar</button><button class="status-select-btn btn-cancelado" onclick="requestStatusChange(&#39;NG-418206&#39;,&#39;cancelado&#39;)">❌ Cancelar</button></div>
+        <div style="display:flex;gap:6px;flex-wrap:wrap;">
+          
+          
+          <button onclick="waNotificar(&#39;NG-418206&#39;,&#39;pendente&#39;)" style="background:rgba(37,211,102,0.12);border:1px solid #25D366;color:#25D366;padding:7px 14px;cursor:pointer;font-family:&#39;Oswald&#39;,sans-serif;font-size:12px;letter-spacing:1px;text-transform:uppercase;transition:all 0.15s;white-space:nowrap;" onmouseover="this.style.background=&#39;rgba(37,211,102,0.22)&#39;" onmouseout="this.style.background=&#39;rgba(37,211,102,0.12)&#39;">
+            📲 Notificar
+          </button>
+        </div>
+      </div>
+    </div><div class="order-card status-pendente" id="order-card-NG-010747">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:10px;margin-bottom:14px;">
+        <div>
+          <div style="font-family:&#39;Bebas Neue&#39;,sans-serif;font-size:20px;letter-spacing:3px;color:var(--amarelo);">NG-010747</div>
+          <div style="font-family:&#39;Oswald&#39;,sans-serif;font-size:11px;color:var(--creme-dim);letter-spacing:1px;margin-top:2px;">⏰ 18/05/26, 19:06</div>
+        </div>
+        <span class="order-status-badge badge-pendente">⏳ Pendente</span>
+      </div>
+
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin-bottom:14px;">
+        <div style="background:var(--preto-surface);border:1px solid var(--preto-border);padding:12px;">
+          <div style="font-family:&#39;Oswald&#39;,sans-serif;font-size:10px;letter-spacing:2px;color:var(--creme-dim);text-transform:uppercase;margin-bottom:6px;">👤 Cliente</div>
+          <div style="font-family:&#39;Oswald&#39;,sans-serif;font-size:14px;font-weight:700;color:var(--creme);">Carlos Henrique de Assis Martins</div>
+          <div style="font-family:&#39;Oswald&#39;,sans-serif;font-size:12px;color:var(--creme-dim);">📱 37998458108</div>
+        </div>
+        <div style="background:var(--preto-surface);border:1px solid var(--preto-border);padding:12px;">
+          <div style="font-family:&#39;Oswald&#39;,sans-serif;font-size:10px;letter-spacing:2px;color:var(--creme-dim);text-transform:uppercase;margin-bottom:6px;">📍 Endereço</div>
+          <div style="font-family:&#39;Oswald&#39;,sans-serif;font-size:12px;color:var(--creme);line-height:1.4;">Rua teste, 268, Dom Bosco, Rio Paranaíba</div>
+        </div>
+        <div style="background:var(--preto-surface);border:1px solid var(--preto-border);padding:12px;">
+          <div style="font-family:&#39;Oswald&#39;,sans-serif;font-size:10px;letter-spacing:2px;color:var(--creme-dim);text-transform:uppercase;margin-bottom:6px;">💰 Pagamento</div>
+          <div style="font-family:&#39;Oswald&#39;,sans-serif;font-size:12px;color:var(--creme);">💳 Cartão (credito)</div>
+        </div>
+      </div>
+
+      <div style="background:var(--preto-surface);border:1px solid var(--preto-border);padding:12px;margin-bottom:14px;">
+        <div style="font-family:&#39;Oswald&#39;,sans-serif;font-size:10px;letter-spacing:2px;color:var(--creme-dim);text-transform:uppercase;margin-bottom:8px;">🛒 Itens</div>
+        <div style="display:flex;justify-content:space-between;font-family:&#39;Oswald&#39;,sans-serif;font-size:12px;color:var(--creme-dim);padding:3px 0;border-bottom:1px solid var(--preto-border);">
+        <span>🥩 Boi (Simples) × 1</span>
+        <span style="color:var(--amarelo);">R$ 14,00</span>
+      </div><div style="display:flex;justify-content:space-between;font-family:&#39;Oswald&#39;,sans-serif;font-size:12px;color:var(--creme-dim);padding:3px 0;border-bottom:1px solid var(--preto-border);">
+        <span>🥓 Franbacon (Simples) × 2</span>
+        <span style="color:var(--amarelo);">R$ 28,00</span>
+      </div>
+        <div style="display:flex;justify-content:flex-end;margin-top:10px;">
+          <div style="font-family:&#39;Bebas Neue&#39;,sans-serif;font-size:20px;letter-spacing:2px;color:var(--amarelo);">TOTAL: R$ 45,00</div>
+        </div>
+      </div>
+
+      
+
+      <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;justify-content:space-between;">
+        <div style="display:flex;gap:8px;flex-wrap:wrap;"><button class="status-select-btn btn-em_andamento" onclick="requestStatusChange(&#39;NG-010747&#39;,&#39;em_andamento&#39;)">🔥 Iniciar</button><button class="status-select-btn btn-cancelado" onclick="requestStatusChange(&#39;NG-010747&#39;,&#39;cancelado&#39;)">❌ Cancelar</button></div>
+        <div style="display:flex;gap:6px;flex-wrap:wrap;">
+          
+          
+          <button onclick="waNotificar(&#39;NG-010747&#39;,&#39;pendente&#39;)" style="background:rgba(37,211,102,0.12);border:1px solid #25D366;color:#25D366;padding:7px 14px;cursor:pointer;font-family:&#39;Oswald&#39;,sans-serif;font-size:12px;letter-spacing:1px;text-transform:uppercase;transition:all 0.15s;white-space:nowrap;" onmouseover="this.style.background=&#39;rgba(37,211,102,0.22)&#39;" onmouseout="this.style.background=&#39;rgba(37,211,102,0.12)&#39;">
+            📲 Notificar
+          </button>
+        </div>
+      </div>
+    </div><div class="order-card status-pendente" id="order-card-NG-460891">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:10px;margin-bottom:14px;">
+        <div>
+          <div style="font-family:&#39;Bebas Neue&#39;,sans-serif;font-size:20px;letter-spacing:3px;color:var(--amarelo);">NG-460891</div>
+          <div style="font-family:&#39;Oswald&#39;,sans-serif;font-size:11px;color:var(--creme-dim);letter-spacing:1px;margin-top:2px;">⏰ 18/05/26, 16:44</div>
+        </div>
+        <span class="order-status-badge badge-pendente">⏳ Pendente</span>
+      </div>
+
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin-bottom:14px;">
+        <div style="background:var(--preto-surface);border:1px solid var(--preto-border);padding:12px;">
+          <div style="font-family:&#39;Oswald&#39;,sans-serif;font-size:10px;letter-spacing:2px;color:var(--creme-dim);text-transform:uppercase;margin-bottom:6px;">👤 Cliente</div>
+          <div style="font-family:&#39;Oswald&#39;,sans-serif;font-size:14px;font-weight:700;color:var(--creme);">Carlos Henrique de Assis Martins</div>
+          <div style="font-family:&#39;Oswald&#39;,sans-serif;font-size:12px;color:var(--creme-dim);">📱 37998458108</div>
+        </div>
+        <div style="background:var(--preto-surface);border:1px solid var(--preto-border);padding:12px;">
+          <div style="font-family:&#39;Oswald&#39;,sans-serif;font-size:10px;letter-spacing:2px;color:var(--creme-dim);text-transform:uppercase;margin-bottom:6px;">📍 Endereço</div>
+          <div style="font-family:&#39;Oswald&#39;,sans-serif;font-size:12px;color:var(--creme);line-height:1.4;">Rua teste, 2 - Rtre, Tsttygcd, Rio Paranaíba</div>
+        </div>
+        <div style="background:var(--preto-surface);border:1px solid var(--preto-border);padding:12px;">
+          <div style="font-family:&#39;Oswald&#39;,sans-serif;font-size:10px;letter-spacing:2px;color:var(--creme-dim);text-transform:uppercase;margin-bottom:6px;">💰 Pagamento</div>
+          <div style="font-family:&#39;Oswald&#39;,sans-serif;font-size:12px;color:var(--creme);">📱 Pix</div>
+        </div>
+      </div>
+
+      <div style="background:var(--preto-surface);border:1px solid var(--preto-border);padding:12px;margin-bottom:14px;">
+        <div style="font-family:&#39;Oswald&#39;,sans-serif;font-size:10px;letter-spacing:2px;color:var(--creme-dim);text-transform:uppercase;margin-bottom:8px;">🛒 Itens</div>
+        <div style="display:flex;justify-content:space-between;font-family:&#39;Oswald&#39;,sans-serif;font-size:12px;color:var(--creme-dim);padding:3px 0;border-bottom:1px solid var(--preto-border);">
+        <span>🥩 Boi (Simples) × 1</span>
+        <span style="color:var(--amarelo);">R$ 14,00</span>
+      </div><div style="display:flex;justify-content:space-between;font-family:&#39;Oswald&#39;,sans-serif;font-size:12px;color:var(--creme-dim);padding:3px 0;border-bottom:1px solid var(--preto-border);">
+        <span>🥓 Franbacon (Completo) × 1</span>
+        <span style="color:var(--amarelo);">R$ 16,00</span>
+      </div>
+        <div style="display:flex;justify-content:flex-end;margin-top:10px;">
+          <div style="font-family:&#39;Bebas Neue&#39;,sans-serif;font-size:20px;letter-spacing:2px;color:var(--amarelo);">TOTAL: R$ 33,00</div>
+        </div>
+      </div>
+
+      
+
+      <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;justify-content:space-between;">
+        <div style="display:flex;gap:8px;flex-wrap:wrap;"><button class="status-select-btn btn-em_andamento" onclick="requestStatusChange(&#39;NG-460891&#39;,&#39;em_andamento&#39;)">🔥 Iniciar</button><button class="status-select-btn btn-cancelado" onclick="requestStatusChange(&#39;NG-460891&#39;,&#39;cancelado&#39;)">❌ Cancelar</button></div>
+        <div style="display:flex;gap:6px;flex-wrap:wrap;">
+          
+          
+          <button onclick="waNotificar(&#39;NG-460891&#39;,&#39;pendente&#39;)" style="background:rgba(37,211,102,0.12);border:1px solid #25D366;color:#25D366;padding:7px 14px;cursor:pointer;font-family:&#39;Oswald&#39;,sans-serif;font-size:12px;letter-spacing:1px;text-transform:uppercase;transition:all 0.15s;white-space:nowrap;" onmouseover="this.style.background=&#39;rgba(37,211,102,0.22)&#39;" onmouseout="this.style.background=&#39;rgba(37,211,102,0.12)&#39;">
+            📲 Notificar
+          </button>
+        </div>
+      </div>
+    </div></div>
+    <div id="orders-empty" style="display: none; text-align: center; padding: 80px 0px; color: var(--creme-dim);">
       <div style="font-size:60px;opacity:0.3;margin-bottom:16px;">📋</div>
       <div style="font-family:&#39;Bebas Neue&#39;,sans-serif;font-size:24px;letter-spacing:3px;">Nenhum pedido ainda</div>
       <div style="font-family:&#39;Oswald&#39;,sans-serif;font-size:13px;margin-top:8px;letter-spacing:1px;">Os pedidos confirmados aparecerão aqui</div>
@@ -1636,17 +2024,18 @@ updateCartUI();
 </div>
 
 <!-- ═══ STATUS CHANGE CONFIRMATION MODAL ═══ -->
-<div id="status-modal" style="display:none;position:fixed;inset:0;z-index:600;background:rgba(0,0,0,0.85);backdrop-filter:blur(4px);align-items:center;justify-content:center;">
+<div id="status-modal" style="display: none; position: fixed; inset: 0px; z-index: 600; background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(4px); align-items: center; justify-content: center;">
   <div style="background:var(--preto-card);border:2px solid var(--amarelo-dim);padding:32px;max-width:400px;width:90%;animation:cardIn 0.25s ease both;position:relative;">
     <div style="position:absolute;top:0;left:0;border-style:solid;border-width:18px 18px 0 0;border-color:var(--amarelo-dim) transparent transparent transparent;"></div>
     <div style="font-family:&#39;Bebas Neue&#39;,sans-serif;font-size:22px;letter-spacing:3px;color:var(--amarelo);margin-bottom:8px;">Alterar Status</div>
-    <div id="status-modal-desc" style="font-family:&#39;Oswald&#39;,sans-serif;font-size:13px;color:var(--creme-dim);letter-spacing:0.5px;margin-bottom:20px;line-height:1.6;"></div>
+    <div id="status-modal-desc" style="font-family:&#39;Oswald&#39;,sans-serif;font-size:13px;color:var(--creme-dim);letter-spacing:0.5px;margin-bottom:20px;line-height:1.6;">Pedido <strong style="color:var(--amarelo)">NG-853157</strong> — Erica Abadia Silva Martins<br><br>Mudar status para: <strong style="color:var(--creme)">Em Andamento 🔥</strong><div style="margin-top:10px;font-size:11px;color:#25D366;">📲 WhatsApp abrirá automaticamente com a mensagem pronta. Basta clicar em Enviar.</div></div>
     <div style="display:flex;gap:10px;">
-      <button onclick="confirmStatusChange()" id="status-modal-confirm" style="flex:1;background:var(--amarelo);color:var(--preto);border:none;padding:12px;font-family:&#39;Bebas Neue&#39;,sans-serif;font-size:16px;letter-spacing:2px;cursor:pointer;clip-path:polygon(6px 0%,100% 0%,calc(100% - 6px) 100%,0% 100%);transition:background 0.2s;" onmouseover="this.style.background=&#39;var(--amarelo-hover)&#39;" onmouseout="this.style.background=&#39;var(--amarelo)&#39;">CONFIRMAR</button>
+      <button onclick="confirmStatusChange()" id="status-modal-confirm" style="flex: 1 1 0%; background: var(--amarelo); color: var(--preto); border-width: medium; border-style: none; border-color: currentcolor; border-image: initial; padding: 12px; font-family: &quot;Bebas Neue&quot;, sans-serif; font-size: 16px; letter-spacing: 2px; cursor: pointer; clip-path: polygon(6px 0%, 100% 0%, calc(100% - 6px) 100%, 0% 100%); transition: background 0.2s;" onmouseover="this.style.background=&#39;var(--amarelo-hover)&#39;" onmouseout="this.style.background=&#39;var(--amarelo)&#39;">CONFIRMAR</button>
       <button onclick="closeStatusModal()" style="flex:1;background:transparent;color:var(--creme-dim);border:1px solid var(--preto-border);padding:12px;font-family:&#39;Oswald&#39;,sans-serif;font-size:13px;letter-spacing:1px;cursor:pointer;text-transform:uppercase;transition:all 0.2s;" onmouseover="this.style.borderColor=&#39;var(--creme-dim)&#39;" onmouseout="this.style.borderColor=&#39;var(--preto-border)&#39;">Cancelar</button>
     </div>
   </div>
 </div>
+
 
 
 
