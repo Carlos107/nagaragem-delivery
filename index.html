@@ -1335,10 +1335,124 @@ function renderOrders() {
           <button onclick="waNotificar('${order.id}','${order.status}')" style="background:rgba(37,211,102,0.12);border:1px solid #25D366;color:#25D366;padding:7px 14px;cursor:pointer;font-family:'Oswald',sans-serif;font-size:12px;letter-spacing:1px;text-transform:uppercase;transition:all 0.15s;white-space:nowrap;" onmouseover="this.style.background='rgba(37,211,102,0.22)'" onmouseout="this.style.background='rgba(37,211,102,0.12)'">
             📲 Notificar
           </button>
+          <button onclick="printOrder('${order.id}')" style="background:rgba(245,197,24,0.08);border:1px solid var(--amarelo-dim);color:var(--amarelo);padding:7px 14px;cursor:pointer;font-family:'Oswald',sans-serif;font-size:12px;letter-spacing:1px;text-transform:uppercase;transition:all 0.15s;white-space:nowrap;" onmouseover="this.style.background='rgba(245,197,24,0.18)'" onmouseout="this.style.background='rgba(245,197,24,0.08)'">
+            🖨️ Imprimir
+          </button>
         </div>
       </div>
     </div>`;
   }).join("");
+}
+
+/* ════════════════════════════════════
+   IMPRESSÃO DE PEDIDO
+════════════════════════════════════ */
+function printOrder(orderId) {
+  const order = orders.find(o => o.id === orderId);
+  if (!order) return;
+
+  const dateStr = new Date(order.createdAt).toLocaleString("pt-BR", {
+    day: "2-digit", month: "2-digit", year: "numeric", hour: "2-digit", minute: "2-digit"
+  });
+
+  const itemsRows = order.items.map(i => `
+    <tr>
+      <td>${i.emoji || ""} ${i.name}${i.type ? " (" + i.type + ")" : ""}</td>
+      <td style="text-align:center;">${i.qty}</td>
+      <td style="text-align:right;">${fmt(i.price)}</td>
+      <td style="text-align:right;">${fmt(i.price * i.qty)}</td>
+    </tr>`).join("");
+
+  const statusLabel = STATUS_LABELS[order.status] || order.status;
+
+  const html = `<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>Pedido ${order.id} — Na Garagem Delivery</title>
+<style>
+  * { box-sizing: border-box; }
+  body { font-family: 'Courier New', monospace; color:#000; background:#fff; margin:0; padding:24px; max-width:380px; }
+  .header { text-align:center; border-bottom:2px dashed #000; padding-bottom:10px; margin-bottom:12px; }
+  .header h1 { font-size:19px; margin:0 0 4px; letter-spacing:1.5px; }
+  .header .sub { font-size:11px; letter-spacing:1px; }
+  .order-id { font-size:22px; font-weight:bold; text-align:center; margin:12px 0 6px; letter-spacing:2px; }
+  .status { text-align:center; font-size:12px; font-weight:bold; margin-bottom:14px; text-transform:uppercase; border:1px solid #000; padding:5px; }
+  .section { margin-bottom:12px; font-size:12px; }
+  .section .label { font-weight:bold; text-transform:uppercase; font-size:10px; letter-spacing:1px; margin-bottom:2px; }
+  table { width:100%; border-collapse:collapse; font-size:11px; margin-top:6px; }
+  th, td { padding:4px 2px; text-align:left; }
+  thead tr { border-bottom:1px solid #000; }
+  tbody tr { border-bottom:1px dashed #ccc; }
+  tfoot .total-row td { border-top:2px solid #000; font-weight:bold; font-size:14px; padding-top:8px; }
+  .obs { border:1px dashed #000; padding:8px; font-size:11px; margin-top:10px; }
+  .footer { text-align:center; font-size:10px; margin-top:18px; border-top:2px dashed #000; padding-top:10px; }
+  @media print {
+    body { padding:6px; }
+    @page { margin:10mm; }
+  }
+</style>
+</head>
+<body>
+  <div class="header">
+    <h1>🍖 NA GARAGEM DELIVERY</h1>
+    <div class="sub">Rio Paranaíba, MG</div>
+  </div>
+
+  <div class="order-id">${order.id}</div>
+  <div class="status">${statusLabel}</div>
+
+  <div class="section">
+    <div class="label">Data / Hora</div>
+    <div>⏰ ${dateStr}</div>
+  </div>
+
+  <div class="section">
+    <div class="label">Cliente</div>
+    <div>${order.cliente.nome}</div>
+    <div>📱 ${order.cliente.tel}</div>
+  </div>
+
+  <div class="section">
+    <div class="label">Endereço</div>
+    <div>${order.endereco}</div>
+  </div>
+
+  <div class="section">
+    <div class="label">Pagamento</div>
+    <div>${order.pagamento}</div>
+  </div>
+
+  <div class="section">
+    <div class="label">Itens</div>
+    <table>
+      <thead>
+        <tr><th>Item</th><th style="text-align:center;">Qtd</th><th style="text-align:right;">Unit.</th><th style="text-align:right;">Subt.</th></tr>
+      </thead>
+      <tbody>${itemsRows}</tbody>
+      <tfoot>
+        <tr class="total-row"><td colspan="3">TOTAL</td><td style="text-align:right;">${fmt(order.total)}</td></tr>
+      </tfoot>
+    </table>
+  </div>
+
+  ${order.obs ? `<div class="obs">📝 ${order.obs}</div>` : ""}
+
+  <div class="footer">Impresso em ${new Date().toLocaleString("pt-BR")}</div>
+</body>
+</html>`;
+
+  const win = window.open("", "_blank", "width=420,height=720");
+  if (!win) {
+    showToast("Permita pop-ups no navegador para imprimir o pedido.", "error");
+    return;
+  }
+  win.document.write(html);
+  win.document.close();
+  win.onload = () => {
+    win.focus();
+    win.print();
+  };
 }
 
 /* ════════════════════════════════════
