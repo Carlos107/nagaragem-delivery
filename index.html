@@ -4,7 +4,7 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Na Garagem Delivery — Faça seu Pedido</title>
-<link href="./Na Garagem Delivery — Faça seu Pedido_files/css2" rel="stylesheet">
+<link href="./Na Garagem Delivery — Faça seu Pedido 2_files/css2" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -1564,7 +1564,9 @@ function waNotificar(orderId, statusKey, auto = false) {
   waSaveLog(orderId, statusKey, true);
 
   // Abre WhatsApp Web/App com a mensagem pré-preenchida
-  window.open(url, "_blank", "noopener");
+  // Usamos um nome fixo de janela ("na_garagem_whatsapp") em vez de "_blank":
+  // assim o navegador reaproveita a mesma aba/janela em vez de abrir uma nova a cada notificação.
+  window.open(url, "na_garagem_whatsapp");
 
   // Feedback visual
   if (!auto) showToast(`📲 WhatsApp aberto para ${order.cliente.nome}!`, "success");
@@ -2124,6 +2126,7 @@ updateCartUI();
     </div>
   </div>
 </div>
+
 
 
 
